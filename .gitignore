@@ -1,16 +1,23 @@
-# Python-generated files
+# Byte-compiled / optimized / compiled Python
 __pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
+*.py[cod]
+*$py.class
 
-# Virtual environments
+# Environments
 .venv/
+venv/
+ENV/
 
-# Environment variables
-.env
+# Project Artifacts (Large binary files)
+artifacts/
+*.npy
+*.index
 
-# VS Code
-.vscode/
+# Data
+data/
+*.jsonl
+*.jsonl.gz
+
+# OS files
+.DS_Store
+Thumbs.db
