@@ -7,7 +7,7 @@ from tqdm import tqdm
 from sentence_transformers import SentenceTransformer
 
 from src.loader import load_candidates
-from src.text_builder import build_rich_text_block
+from src.text_builder import build_rich_txt
 from src.config import (
     EMBEDDING_MODEL, 
     EMBEDDINGS_PATH, 
@@ -25,7 +25,7 @@ def generate_candidate_embeddings(model, candidates):
 
     print("Preparing rich text blocks for embedding...")
 
-    text_blocks = [build_rich_text_block(c) for c in tqdm(candidates, desc="Processing Profiles")]
+    text_blocks = [build_rich_txt(c) for c in tqdm(candidates, desc="Processing Profiles")]
     
     print(f"Encoding {len(text_blocks)} candidates using {EMBEDDING_MODEL}...")
     # convert_to_numpy=True is essential for FAISS compatibility
