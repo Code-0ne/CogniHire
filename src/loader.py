@@ -5,11 +5,12 @@ from tqdm import tqdm
 from src.config import CANDIDATES_FILE
 
 
-def load_candidates():
+def load_candidates(input_file=None):
     candidates = []
-    print(f"🚀 Loading candidates from {CANDIDATES_FILE}...")
+    file_path = input_file if input_file else CANDIDATES_FILE
+    print(f"🚀 Loading candidates from {file_path}...")
     try:
-        with open(CANDIDATES_FILE, "r", encoding="utf-8") as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             for line in tqdm(f, total=100000, desc="Reading JSONL"):
                 if line.strip():
                     candidates.append(json.loads(line))
@@ -21,17 +22,15 @@ def load_candidates():
 
 
 def validate_dataset(candidates):
-    """
-    Performs basic sanity checks on the loaded dataset.
-    """
+
     if not candidates:
         return False
     
-    # Check 1: Count
+    
     if len(candidates) != 100000:
         print(f"⚠️ Warning: Expected 100,000 candidates, found {len(candidates)}")
     
-    # Check 2: Schema check for first record
+    
     required_keys = ["candidate_id", "profile", "career_history", "redrob_signals"]
     first_rec = candidates[0]
     missing = [key for key in required_keys if key not in first_rec]
@@ -44,7 +43,7 @@ def validate_dataset(candidates):
     return True
 
 if __name__ == "__main__":
-    # Quick test run
+    
     data = load_candidates()
     if data:
         validate_dataset(data)

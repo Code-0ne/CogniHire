@@ -15,7 +15,7 @@ def sieve_1(candidates):
 
 def sieve_2(candidate_indices, candidates):
 
-    print("🧠 Sieve 2: Applying Intelligence Filters & Trap Detection...")
+    print("Sieve 2: Applying Intelligence Filters & Trap Detection...")
     jd = get_jd_cont()
     scored_candidates = []
 
@@ -38,9 +38,12 @@ def sieve_2(candidate_indices, candidates):
             if avg_tenure < MAX_AVG_TENURE_FOR_STABILITY:
                 red_flags += 1
 
-        rich_text = " ".join([j.get("description", "") for j in career]).lower()
-        if any(w in rich_text for w in WRONG_DOMAIN_KEYWORDS) and not any(w in rich_text for w in REQUIRED_DOMAIN_KEYWORDS):
-            red_flags += 1
+        rich_text = " ".join([j.get("description", "") for j in cand.get("career_history", [])]).lower()
+        summary = cand.get("profile", {}).get("summary", "").lower()
+        full_profile_text = rich_text + " " + summary
+        
+        if not any(word in full_profile_text for word in REQUIRED_DOMAIN_KEYWORDS):
+            continue 
 
         yoe = sum([j.get("duration_months", 0)/12 for j in career])
         if yoe > MIN_YEARS_FOR_EXTERNAL_VALIDATION:

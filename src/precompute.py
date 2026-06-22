@@ -1,6 +1,8 @@
-
+# src/precompute.py
 import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import time
+import multiprocessing
 import numpy as np
 import faiss
 from tqdm import tqdm
@@ -16,40 +18,45 @@ from src.config import (
 )
 
 def setup_artifacts():
-
     if not os.path.exists("artifacts"):
         os.makedirs("artifacts")
-        print("Created /artifacts directory for model weights and indices.")
+        print("Created /artifacts directory.")
 
-def generate_candidate_embeddings(model, candidates):
+def generate_candidate_embeddings_parallel(model, candidates):
 
-    print("Preparing rich text blocks for embedding...")
-
+    print("Preparing rich text blocks...")
+  
     text_blocks = [build_rich_txt(c) for c in tqdm(candidates, desc="Processing Profiles")]
     
-    print(f"Encoding {len(text_blocks)} candidates using {EMBEDDING_MODEL}...")
-    # convert_to_numpy=True is essential for FAISS compatibility
+    print(f"Encoding {len(text_blocks)} candidates in parallel using {EMBEDDING_MODEL}...")
+    
+
+    pool = model.start_multi_process_pool()
+    
+  
     embeddings = model.encode(
         text_blocks, 
-        batch_size=512, 
-        show_progress_bar=True, 
-        convert_to_numpy=True
+        pool=pool, 
+        batch_size=512,
+        show_progress_bar=True
     )
     
-    return embeddings.astype('float32')
+
+    model.stop_multi_process_pool(pool)
+    
+    return np.array(embeddings).astype('float32')
 
 def build_and_save_faiss_index(embeddings):
-
-    print("Indexing vectors with FAISS...")
+    print("🏗️  Indexing vectors with FAISS...")
     dimension = embeddings.shape[1]
     index = faiss.IndexFlatL2(dimension) 
     index.add(embeddings)
-    
     faiss.write_index(index, FAISS_INDEX_PATH)
-    print(f"Index successfully written to {FAISS_INDEX_PATH}")
+    print(f"Index saved to {FAISS_INDEX_PATH}")
 
 def main():
     start_time = time.time()
+    
 
     target_jd = (
         "Senior AI Engineer. Expertise in embeddings, vector databases, and ranking systems. "
@@ -60,38 +67,32 @@ def main():
     try:
         setup_artifacts()
         
-        # Initialize Model
-        print(f"Initializing Sentence-Transformer: {EMBEDDING_MODEL}...")
-        model = SentenceTransformer(EMBEDDING_MODEL)
+        print(f"Initializing model: {EMBEDDING_MODEL}...")
+        model = SentenceTransformer(EMBEDDING_MODEL, device="cpu")  
         
-        # Load Data
         candidates = load_candidates()
-        if not candidates:
-            print("No candidates loaded. Aborting pre-computation.")
-            return
+        if not candidates: return
 
-        # 1. Embeddings Generation
-        embeddings = generate_candidate_embeddings(model, candidates)
+    
+        embeddings = generate_candidate_embeddings_parallel(model, candidates)
         np.save(EMBEDDINGS_PATH, embeddings)
         print(f"Embeddings saved to {EMBEDDINGS_PATH}")
         
-        # 2. Indexing
         build_and_save_faiss_index(embeddings)
         
-        # 3. JD Vector
         print("Precomputing JD target vector...")
         jd_vec = model.encode([target_jd]).astype('float32')
         np.save(JD_EMBEDDING_PATH, jd_vec)
-        print(f"JD Vector saved to {JD_EMBEDDING_PATH}")
-
+        
         end_time = time.time()
-        duration = (end_time - start_time) / 60
-        print(f"\nPre-computation successful! Total time: {duration:.2f} minutes.")
-        print("System is now ready for the Ranking Phase (Phase 2).")
+        print(f"\n✨ Pre-computation successful! Total time: {(end_time - start_time)/60:.2f} minutes.")
 
     except Exception as e:
-        print(f"A critical error occurred during pre-computation: {e}")
-        # In a real repo, we'd use logging.exception(e) here
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
+    try:
+        multiprocessing.set_start_method('spawn', force=True)
+    except RuntimeError:
+        pass
     main()
