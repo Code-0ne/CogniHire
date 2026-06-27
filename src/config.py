@@ -199,6 +199,8 @@ IDEAL_ML_EXP = (4, 5)
 
 EXP_SWEET_SPOT_BONUS = 1.10
 
+EXP_SWEET_SPOT_BONUS = 1.10
+
 # Location Preferences
  
 
