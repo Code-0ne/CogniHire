@@ -31,10 +31,11 @@ class CogniHireSandbox:
         
   
         D, I = index.search(jd_vec, min(len(candidates), TOP_K_RECALL))
+        top_distances = D[0].tolist()
         top_indices = I[0].tolist()
 
 
-        scored_candidates = sieve_2(top_indices, candidates)
+        scored_candidates = sieve_2(top_distances, top_indices, candidates, jd_text=jd_text)
 
         pairs = []
         candidate_ids = []

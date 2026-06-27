@@ -1,5 +1,6 @@
 import streamlit as st
 from src.sandbox import CogniHireSandbox
+from src.config import TARGET_JD
 
 # PAGE CONFIG 
 st.set_page_config(page_title="CogniHire Sandbox", page_icon="🚀", layout="wide")
@@ -24,7 +25,7 @@ st.divider()
 st.sidebar.header("Configuration")
 jd_input = st.sidebar.text_area(
     "Job Description", 
-    value="Senior AI Engineer. Production experience with embeddings, retrieval, and ranking systems. Shipped to real users. Strong Python. No pure consulting.",
+    value=TARGET_JD,
     height=300
 )
 

@@ -8,13 +8,14 @@ import faiss
 from tqdm import tqdm
 from sentence_transformers import SentenceTransformer
 
-from src.loader import load_candidates
-from src.text_builder import build_rich_txt
-from src.config import (
+from .loader import load_candidates
+from .text_builder import build_rich_txt
+from .config import (
     EMBEDDING_MODEL, 
     EMBEDDINGS_PATH, 
     FAISS_INDEX_PATH, 
-    JD_EMBEDDING_PATH
+    JD_EMBEDDING_PATH,
+    TARGET_JD
 )
 
 def setup_artifacts():
@@ -28,21 +29,16 @@ def generate_candidate_embeddings_parallel(model, candidates):
   
     text_blocks = [build_rich_txt(c) for c in tqdm(candidates, desc="Processing Profiles")]
     
-    print(f"Encoding {len(text_blocks)} candidates in parallel using {EMBEDDING_MODEL}...")
+    print(f"Encoding {len(text_blocks)} candidates using {EMBEDDING_MODEL}...")
     
-
-    pool = model.start_multi_process_pool()
-    
-  
+    # Using standard encode instead of multi_process_pool to avoid potential deadlocks 
+    # and "stuck" behavior during aggregation on some environments.
     embeddings = model.encode(
         text_blocks, 
-        pool=pool, 
-        batch_size=512,
-        show_progress_bar=True
+        batch_size=128,
+        show_progress_bar=True,
+        convert_to_numpy=True
     )
-    
-
-    model.stop_multi_process_pool(pool)
     
     return np.array(embeddings).astype('float32')
 
@@ -57,12 +53,7 @@ def build_and_save_faiss_index(embeddings):
 def main():
     start_time = time.time()
     
-
-    target_jd = (
-        "Senior AI Engineer. Expertise in embeddings, vector databases, and ranking systems. "
-        "Must have shipped production-grade ML systems to real users. Strong Python skills. "
-        "Focus on NDCG/MAP evaluation. Prefers Pune/Noida locations."
-    )
+    target_jd = TARGET_JD
 
     try:
         setup_artifacts()

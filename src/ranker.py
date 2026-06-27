@@ -1,24 +1,26 @@
 import numpy as np
 import pandas as pd
+import time
 from sentence_transformers import CrossEncoder
 from .loader import load_candidates
 from .text_builder import build_rich_txt
 from .sieve_engine import sieve_1, sieve_2
 from .res_gen import generate_reasoning
-from .config import CROSS_ENCODER_MODEL
+from .config import CROSS_ENCODER_MODEL, TARGET_JD
 
 def main(output_file="team_PixelPioneers.csv"):
+    start_time = time.time()
     candidates = load_candidates()
     if not candidates: return
 
     
-    top_indices = sieve_1(candidates)
-    top_600 = sieve_2(top_indices, candidates)
+    distances, top_indices = sieve_1(candidates)
+    top_600 = sieve_2(distances, top_indices, candidates)
 
     
     print("🎯 Sieve 3: Precision Reranking...")
     cross_model = CrossEncoder(CROSS_ENCODER_MODEL)
-    jd_text = "Senior AI Engineer. Production experience with embeddings, retrieval, and ranking systems. Shipped to real users. Strong Python. No pure consulting."
+    jd_text = TARGET_JD
     
     pairs = []
     candidate_ids = []
@@ -52,7 +54,10 @@ def main(output_file="team_PixelPioneers.csv"):
         })
 
     pd.DataFrame(submission_data).to_csv(output_file, index=False)
+    end_time = time.time()
+    duration = end_time - start_time
     print(f"Final submission saved to {output_file}")
+    print(f"⏱️ Total execution time: {duration:.2f} seconds")
 
 if __name__ == "__main__":
     main()
