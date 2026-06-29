@@ -241,7 +241,8 @@ class CogniHireApp(ctk.CTk):
             
         except Exception as e:
             self.log_message(f"❌ Error: {str(e)}")
-            self.after(0, lambda: self._handle_pipeline_error(e))
+            # Use a default argument in lambda to capture the current value of 'e'
+            self.after(0, lambda err=e: self._handle_pipeline_error(err))
 
     def _finalize_pipeline(self, results_df):
         """Updates the UI after successful pipeline execution."""

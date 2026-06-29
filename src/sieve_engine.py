@@ -76,6 +76,10 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         total_yoe = traj["product_company_years"] + traj["consulting_years"]
         if IDEAL_TOTAL_EXP[0] <= total_yoe <= IDEAL_TOTAL_EXP[1]:
             multiplier += 0.15
+        elif total_yoe < 3:
+            multiplier += SIGNAL_MODIFIERS["exp_under_3_penalty"]
+        elif total_yoe < 4:
+            multiplier += SIGNAL_MODIFIERS["exp_under_4_penalty"]
         
         # 2. Core Technical Alignment (Direct Additive Bonuses)
         # These are based on YEARS of experience in a domain, not just keywords

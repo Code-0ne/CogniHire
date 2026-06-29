@@ -231,15 +231,17 @@ LOW_RESPONSE_RATE = 0.20
 SIGNAL_MODIFIERS = {
     "open_to_work_bonus": 0.15,
     "inactive_penalty": -0.30,
-    "low_response_penalty": -0.20,
+    "low_response_penalty": -0.30,
     "high_response_bonus": 0.10,
     "high_demand_bonus": 0.10,
     "high_completion_bonus": 0.10,
     "verified_bonus": 0.05,
     "github_active_bonus": 0.05,
     "fast_notice_bonus": 0.10,
-    "long_notice_penalty": -0.15,
+    "long_notice_penalty": -0.20,
     "production_exp_bonus": 0.20,
+    "exp_under_4_penalty": -0.15,
+    "exp_under_3_penalty": -0.30,
 }
 
 # Scoring Weights
