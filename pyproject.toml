@@ -5,12 +5,11 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "customtkinter>=6.0.0",
     "faiss-cpu>=1.14.3",
     "numpy>=2.4.6",
     "pandas>=3.0.3",
     "sentence-transformers>=5.5.1",
-    "streamlit>=1.58.0",
-    "streamlit-aggrid>=1.2.1.post2",
     "torchvision>=0.27.1",
     "tqdm>=4.68.2",
 ]

@@ -3,14 +3,18 @@ import faiss
 from src.config import *
 from src.jd_parser import get_jd_cont
 
-def sieve_1(candidates=None):
+def sieve_1(candidates=None, jd_vec=None):
 
     print("🔍 Sieve 1: Running Semantic Recall...")
-    jd_vec = np.load(JD_EMBEDDING_PATH).astype('float32')
+    if jd_vec is not None:
+        vector = jd_vec.astype('float32')
+    else:
+        vector = np.load(JD_EMBEDDING_PATH).astype('float32')
+        
     index = faiss.read_index(FAISS_INDEX_PATH)
     
 
-    D, I = index.search(jd_vec, TOP_K_RECALL)
+    D, I = index.search(vector, TOP_K_RECALL)
     return D[0].tolist(), I[0].tolist()
 
 def sieve_2(distances, indices, candidates, jd_text=None):
