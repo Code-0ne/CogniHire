@@ -2,9 +2,9 @@ import numpy as np
 import faiss
 from src.config import *
 from src.jd_parser import get_jd_cont
+from src.trajectory_engine import calculate_trajectory_scores
 
 def sieve_1(candidates=None, jd_vec=None):
-
     print("🔍 Sieve 1: Running Semantic Recall...")
     if jd_vec is not None:
         vector = jd_vec.astype('float32')
@@ -42,19 +42,69 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         
 
         companies = [j.get("company", "").lower() for j in career]
-        if companies and all(any(c in comp for c in CONSULTING_FIRMS) for comp in companies):
+        
+        # Calculate Consulting Ratio
+        consulting_months = sum([j.get("duration_months", 0) for j in career if any(c in j.get("company", "").lower() for c in CONSULTING_FIRMS)])
+        total_months = sum([j.get("duration_months", 0) for j in career])
+        
+        if total_months > 0:
+            consulting_ratio = consulting_months / total_months
+            if consulting_ratio > 0.8:
+                continue 
+        elif companies and all(any(c in comp for c in CONSULTING_FIRMS) for comp in companies):
             continue 
 
      
         rich_text = " ".join([j.get("description", "") for j in career]).lower()
         summary = cand.get("profile", {}).get("summary", "").lower()
         full_profile_text = rich_text + " " + summary
-        if not any(word in full_profile_text for word in REQUIRED_DOMAIN_KEYWORDS):
-            continue 
+        
+        # Domain Relevance Scoring (Replaces brittle hard filter)
+        # Instead of 'continue', we calculate relevance. If 0 hits, we penalize but don't discard.
+        domain_hits = [word for word in REQUIRED_DOMAIN_KEYWORDS if word in full_profile_text]
+        relevance_score = len(domain_hits)
+        
+        if relevance_score == 0:
+            multiplier *= 0.3  # Heavy penalty for zero domain keywords, but keep them in the pool
+        else:
+            multiplier += (relevance_score * 0.02) # Small bonus for keyword density
+
+        # Calculate Structured Trajectory Features
+        traj = calculate_trajectory_scores(cand)
+        
+        # 1. ExperienceSweet Spot (5-9 years)
+        total_yoe = traj["product_company_years"] + traj["consulting_years"]
+        if IDEAL_TOTAL_EXP[0] <= total_yoe <= IDEAL_TOTAL_EXP[1]:
+            multiplier += 0.15
+        
+        # 2. Core Technical Alignment (Direct Additive Bonuses)
+        # These are based on YEARS of experience in a domain, not just keywords
+        # Fix: Clamp experience to 5 years to prevent seniors from dominating unboundedly
+        multiplier += (min(traj["production_ml_years"], 5) * 0.1)  # +10% per year of prod ML (max 5)
+        multiplier += (min(traj["search_rec_years"], 5) * 0.15)   # +15% per year of Search/Rec (max 5)
+        multiplier += (min(traj["ranking_years"], 5) * 0.2)       # +20% per year of Ranking (max 5)
+        multiplier += (min(traj["nlp_years"], 5) * 0.05)          # +5% per year of NLP (max 5)
+        
+        # 3. Critical Infrastructure Bonus
+        if traj["vector_db_deployments"] >= 2:
+            multiplier += 0.2
+            
+        # 4. Engineering Quality Signals
+        if traj["eval_framework_score"] >= 2:
+            multiplier += 0.1
+        if traj["open_source_score"] == 1:
+            multiplier += 0.1
+
+        # 5. Role-based Modifiers
+        if traj["manager_years"] > 3:
+            multiplier -= 0.1  # Slight penalty for too much management vs coding
+        if traj["research_years"] > 4 and traj["production_ml_years"] < 2:
+            red_flags += 1  # Penalty for "Pure Research" without production
 
         # Direct Production Experience Scoring
         # Reward candidates who mention scaling, monitoring, indexing, etc.
         prod_keywords = PRODUCTION_KEYWORDS.union({"monitoring", "indexing", "observability", "kubernetes", "docker", "terraform"})
+
         prod_hits = [word for word in prod_keywords if word in full_profile_text]
         if len(prod_hits) >= 3:
             multiplier += SIGNAL_MODIFIERS["production_exp_bonus"]
@@ -62,12 +112,14 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         if len(career) > 1:
             avg_tenure = yoe / len(career)
             if avg_tenure < MAX_AVG_TENURE_FOR_STABILITY:
-                red_flags += 1
+                # Instead of instant red flag, we check for a pattern of short jobs
+                # Only apply red flag if there are 3+ consecutive short stints (< 18 months)
+                short_stints = [j for j in career if j.get("duration_months", 0) < 18]
+                if len(short_stints) >= 3:
+                    red_flags += 1 # Heavy penalty for habitual job hopping
             
-            # Explicit Job Hopping Detection: Flag repeated short stints (< 18 months)
-            short_stints = [j for j in career if j.get("duration_months", 0) < 18]
-            if len(short_stints) >= 3:
-                red_flags += 1 # Heavy penalty for habitual job hopping
+            # Note: Individual short stints in early career or startup jumps are now ignored
+            # unless they form a pattern of 3 or more.
 
         # --- Redrob Signal Integration ---
         sig = cand.get("redrob_signals", {})

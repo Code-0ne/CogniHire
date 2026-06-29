@@ -13,7 +13,7 @@ def rank_candidates(scored_candidates, candidates, jd_text, cross_model):
     Precision Reranking logic (Sieve 3) extracted from the main ranker.
     
     Args:
-        scored_candidates: Output from sieve_2 (list of dicts with 'index' and 'candidate_id')
+        scored_candidates: Output from sieve_2 (list of dicts with 'index' and 'candidate_id', 'sieve2_score')
         candidates: Full candidate list
         jd_text: Job Description text
         cross_model: The CrossEncoder model instance
@@ -21,6 +21,7 @@ def rank_candidates(scored_candidates, candidates, jd_text, cross_model):
     pairs = []
     candidate_ids = []
     indices = []
+    sieve2_scores = []
     
     # Rerank the candidates passed from sieve_2
     for item in scored_candidates:
@@ -28,12 +29,41 @@ def rank_candidates(scored_candidates, candidates, jd_text, cross_model):
         pairs.append([jd_text, txt])
         candidate_ids.append(item["candidate_id"])
         indices.append(item["index"])
+        sieve2_scores.append(item["sieve2_score"])
 
     cross_scores = cross_model.predict(pairs, batch_size=32)
 
     results = []
     for i in range(len(cross_scores)):
-        results.append({"candidate_id": candidate_ids[i], "index": indices[i], "score": float(cross_scores[i])})
+        # FUSE SCORES: Combine CrossEncoder, Sieve 2, and Trajectory
+        # Final Score = 0.60 * CrossEncoder + 0.25 * Sieve2 + 0.15 * Trajectory
+        
+        # 1. Normalize CrossEncoder score using a sigmoid function to constrain it to [0, 1]
+        # This prevents a single high CE score from dominating the fusion.
+        ce_raw = float(cross_scores[i])
+        ce_score = 1 / (1 + np.exp(-ce_raw)) 
+        
+        s2_score = sieve2_scores[i]
+        # Normalize Sieve 2 score
+        s2_norm = s2_score / 10.0 if s2_score > 1.0 else s2_score
+
+        # Calculate trajectory score for the 15% component
+        from src.trajectory_engine import calculate_trajectory_scores
+        traj = calculate_trajectory_scores(candidates[indices[i]])
+        
+        # Expanded trajectory score to include infrastructure and quality signals
+        traj_val = (min(traj["production_ml_years"], 5) * 1 + 
+                   min(traj["ranking_years"], 5) * 2 + 
+                   min(traj["search_rec_years"], 5) * 1.5 +
+                   (traj["vector_db_deployments"] * 0.5) + 
+                   (traj["eval_framework_score"] * 0.3) + 
+                   (traj["open_source_score"] * 0.5))
+        traj_score = traj_val / 20.0 # Normalized to roughly 0-1
+        
+        # Fusion Logic
+        final_score = (0.60 * ce_score) + (0.25 * s2_norm) + (0.15 * traj_score)
+        
+        results.append({"candidate_id": candidate_ids[i], "index": indices[i], "score": final_score})
 
     results.sort(key=lambda x: (-x["score"], x["candidate_id"]))
     return results[:100]
@@ -59,28 +89,13 @@ def main(output_file="team_PixelPioneers.csv"):
     cross_model = CrossEncoder(CROSS_ENCODER_MODEL)
     jd_text = TARGET_JD
     
-    pairs = []
-    candidate_ids = []
-    indices = []
-    for item in top_600:
-        pairs.append([jd_text, build_rich_txt(candidates[item["index"]])])
-        candidate_ids.append(item["candidate_id"])
-        indices.append(item["index"])
+    # Use the same logic as rank_candidates to ensure consistency between GUI and CLI
+    results_100 = rank_candidates(top_600, candidates, jd_text, cross_model)
 
-    cross_scores = cross_model.predict(pairs)
-
-   
-    results = []
-    for i in range(len(cross_scores)):
-        results.append({"candidate_id": candidate_ids[i], "index": indices[i], "score": float(cross_scores[i])})
-
-    results.sort(key=lambda x: (-x["score"], x["candidate_id"]))
-    final_100 = results[:100]
-
-   
+    # Map results to the submission format
     candidate_map = {c["candidate_id"]: c for c in candidates}
     submission_data = []
-    for rank, res in enumerate(final_100, 1):
+    for rank, res in enumerate(results_100, 1):
         cand_obj = candidate_map.get(res["candidate_id"])
         reasoning = generate_reasoning(cand_obj, rank, res["score"])
         submission_data.append({
@@ -92,6 +107,9 @@ def main(output_file="team_PixelPioneers.csv"):
 
     pd.DataFrame(submission_data).to_csv(output_file, index=False)
     end_time = time.time()
+    duration = end_time - start_time
+    print(f"Final submission saved to {output_file}")
+    print(f"⏱️ Total execution time: {duration:.2f} seconds")
     duration = end_time - start_time
     print(f"Final submission saved to {output_file}")
     print(f"⏱️ Total execution time: {duration:.2f} seconds")

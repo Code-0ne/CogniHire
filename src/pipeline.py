@@ -52,7 +52,9 @@ class CogniHireEngine:
         # 5. Update in-memory state for immediate use in run_pipeline
         self.embeddings = embeddings
         dimension = embeddings.shape[1]
-        self.index = faiss.IndexFlatL2(dimension)
+        # Use IndexFlatIP with normalized vectors for Cosine Similarity
+        faiss.normalize_L2(embeddings)
+        self.index = faiss.IndexFlatIP(dimension)
         self.index.add(embeddings)
         
         print("✨ Precomputation workflow complete. Artifacts generated.")

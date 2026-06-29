@@ -3,6 +3,7 @@ import customtkinter as ctk
 from tkinter import filedialog, messagebox
 import pandas as pd
 import os
+import threading
 from src.pipeline import CogniHireEngine
 from src.loader import load_candidates
 
@@ -71,16 +72,6 @@ class CogniHireApp(ctk.CTk):
         )
         self.browse_btn.pack(side="right")
 
-        # JD Input Section
-        self.jd_label = ctk.CTkLabel(self.sidebar, text="Target Job Description:", font=("Arial", 14, "bold"))
-        self.jd_label.pack(pady=(20, 5), padx=20, anchor="w")
-        
-        self.jd_text = ctk.CTkTextbox(self.sidebar, width=260, height=250, font=("Arial", 12))
-        self.jd_text.pack(pady=10, padx=20)
-        # Use the official TARGET_JD from config for consistency
-        from src.config import TARGET_JD
-        self.jd_text.insert("0.0", TARGET_JD)
-
         # Action Buttons
         self.run_btn = ctk.CTkButton(
             self.sidebar, 
@@ -115,11 +106,23 @@ class CogniHireApp(ctk.CTk):
             font=("Arial", 14),
             text_color="white"
         )
-        self.status_label.grid(row=0, column=0, pady=20)
+        self.status_label.grid(row=0, column=0, pady=(20, 10))
+
+        # Execution Log Console
+        self.log_console = ctk.CTkTextbox(
+            self.main_frame, 
+            height=120, 
+            font=("Courier New", 12),
+            text_color="#A9B7C6",
+            fg_color="#1E1E1E",
+            border_width=1
+        )
+        self.log_console.grid(row=1, column=0, sticky="ew", padx=20, pady=(0, 20))
+        self.log_console.configure(state="disabled")
 
         # Results Table
         self.results_frame = ctk.CTkScrollableFrame(self.main_frame, label_text="Ranking Results")
-        self.results_frame.grid(row=1, column=0, sticky="nsew", padx=20, pady=(0, 20))
+        self.results_frame.grid(row=2, column=0, sticky="nsew", padx=20, pady=(0, 20))
         self.setup_results_table()
 
     def initialize_system(self):
@@ -177,38 +180,82 @@ class CogniHireApp(ctk.CTk):
             messagebox.showwarning("No File", "Please select a .jsonl dataset first.")
             return
 
-        jd_text = self.jd_text.get("1.0", "end-1c").strip()
-        if not jd_text:
-            messagebox.showwarning("No JD", "Please enter a target job description.")
-            return
+        from src.config import TARGET_JD
+        jd_text = TARGET_JD
 
         self.run_btn.configure(state="disabled")
         self.status_label.configure(text="🚀 Processing... Please wait.", text_color="yellow")
         self.update_idletasks()
 
+        # Run the heavy pipeline in a separate thread to keep GUI responsive
+        threading.Thread(target=self._execute_pipeline_thread, args=(jd_text,), daemon=True).start()
+
+    def update_status(self, text, color="white"):
+        """Thread-safe method to update the status label."""
+        self.after(0, lambda: self.status_label.configure(text=text, text_color=color))
+
+    def log_message(self, message):
+        """Thread-safe method to append logs to the console."""
+        def append():
+            self.log_console.configure(state="normal")
+            self.log_console.insert("end", f"{message}\n")
+            self.log_console.see("end")
+            self.log_console.configure(state="disabled")
+        self.after(0, append)
+
+    def _execute_pipeline_thread(self, jd_text):
+        """Internal thread method to handle the heavy lifting."""
+        import time
+        start_time = time.time()
         try:
+            self.log_message("🚀 Starting pipeline execution...")
+            
+            # 1. Load Candidates
+            self.update_status("📂 Loading candidates...", "yellow")
+            self.log_message(f"Loading candidates from {os.path.basename(self.selected_file)}...")
             self.candidates = load_candidates(self.selected_file)
             if not self.candidates:
                 raise ValueError("Failed to load candidates from the selected file.")
+            self.log_message(f"✅ Successfully loaded {len(self.candidates)} candidates.")
 
-            self.status_label.configure(text="⚙️  Precomputing embeddings & index...", text_color="yellow")
-            self.update_idletasks()
+            # 2. Precompute
+            self.update_status("⚙️  Precomputing embeddings & index...", "yellow")
+            self.log_message("⚙️  Executing precompute.py workflow...")
+            pre_start = time.time()
             self.engine.precompute_on_fly(self.candidates)
+            self.log_message(f"✅ Precomputation complete. Time: {time.time() - pre_start:.2f}s")
 
-            self.status_label.configure(text="🧠 Ranking and generating reasoning...", text_color="yellow")
-            self.update_idletasks()
+            # 3. Rank
+            self.update_status("🧠 Ranking and generating reasoning...", "yellow")
+            self.log_message("🧠 Running Sieve 1, 2, and 3 (Reranking)...")
+            rank_start = time.time()
             results_df = self.engine.run_pipeline(self.candidates, jd_text)
+            self.log_message(f"✅ Ranking complete. Time: {time.time() - rank_start:.2f}s")
             
-            self.display_results(results_df)
-            self.last_results = results_df
-            self.status_label.configure(text="✅ Ranking Complete!", text_color="green")
-            self.export_btn.configure(state="normal")
+            total_time_s = time.time() - start_time
+            total_time_m = total_time_s / 60
+            self.log_message(f"✨ Total execution time: {total_time_s:.2f}s ({total_time_m:.2f} mins)")
+            
+            # Update UI on the main thread
+            self.after(0, lambda: self._finalize_pipeline(results_df))
             
         except Exception as e:
-            messagebox.showerror("Pipeline Error", str(e))
-            self.status_label.configure(text="❌ Execution failed", text_color="red")
-        finally:
-            self.run_btn.configure(state="normal")
+            self.log_message(f"❌ Error: {str(e)}")
+            self.after(0, lambda: self._handle_pipeline_error(e))
+
+    def _finalize_pipeline(self, results_df):
+        """Updates the UI after successful pipeline execution."""
+        self.display_results(results_df)
+        self.last_results = results_df
+        self.status_label.configure(text="✅ Ranking Complete!", text_color="green")
+        self.export_btn.configure(state="normal")
+        self.run_btn.configure(state="normal")
+
+    def _handle_pipeline_error(self, e):
+        """Handles errors from the pipeline thread."""
+        messagebox.showerror("Pipeline Error", str(e))
+        self.status_label.configure(text="❌ Execution failed", text_color="red")
+        self.run_btn.configure(state="normal")
 
     def export_csv(self):
         if self.last_results is not None:

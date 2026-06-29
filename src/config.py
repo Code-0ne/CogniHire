@@ -213,7 +213,7 @@ LOCATION_BONUSES = {
     "india": 1.00,
 }
 
-DEFAULT_LOCATION_MULTIPLIER = 0.50
+DEFAULT_LOCATION_MULTIPLIER = 0.95
 
 # Behaviour Thresholds
 
@@ -245,10 +245,11 @@ SIGNAL_MODIFIERS = {
 # Scoring Weights
 
 SCORING_WEIGHTS = {
-    "semantic": 0.50,
+    "cross_encoder": 0.45,
     "behavior": 0.20,
     "production": 0.15,
-    "experience": 0.10,
+    "career_trajectory": 0.10,
+    "experience": 0.05,
     "location": 0.05,
 }
 

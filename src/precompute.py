@@ -43,9 +43,13 @@ def generate_candidate_embeddings_parallel(model, candidates):
     return np.array(embeddings).astype('float32')
 
 def build_and_save_faiss_index(embeddings):
-    print("🏗️  Indexing vectors with FAISS...")
+    print("🏗️  Indexing vectors with FAISS (Cosine Similarity)...")
+    
+    # L2 Normalize embeddings to use Inner Product as Cosine Similarity
+    faiss.normalize_L2(embeddings)
+    
     dimension = embeddings.shape[1]
-    index = faiss.IndexFlatL2(dimension) 
+    index = faiss.IndexFlatIP(dimension) 
     index.add(embeddings)
     faiss.write_index(index, FAISS_INDEX_PATH)
     print(f"Index saved to {FAISS_INDEX_PATH}")
