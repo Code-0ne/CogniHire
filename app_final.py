@@ -1,182 +1,298 @@
-# gui.py
 import customtkinter as ctk
 from tkinter import filedialog, messagebox
-import pandas as pd
 import os
 import threading
 from src.pipeline import CogniHireEngine
 from src.loader import load_candidates
 
-# Set the appearance and theme
-ctk.set_appearance_mode("Dark")
+ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
+
+BG = "#f5efe6"
+PAPER = "#fffaf2"
+PANEL = "#fffdf8"
+SURFACE = "#fffdf8"
+SURFACE_ALT = "#f9f3e9"
+SURFACE_ELEV = "#fffaf2"
+BORDER = "#cfc3b2"
+BORDER_STRONG = "#b8a28e"
+ACCENT = "#7b5c42"
+ACCENT_SOFT = "#e6d8ca"
+ACCENT_WARM = "#d8c4ae"
+TEXT = "#111111"
+MUTED = "#6f6a63"
+SUCCESS = "#4f6f52"
+
 
 class CogniHireApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        # 1. Window Configuration
-        self.title("CogniHire Talent Intelligence Engine - Production Mode")
-        self.geometry("1200x700")
+        self.title("CogniHire | Executive Talent Intelligence")
+        self.geometry("1280x700")
+        self.minsize(1280, 740)
+        self.configure(fg_color=BG)
 
-        # 2. State Management
         self.candidates = None
         self.engine = None
         self.last_results = None
+        self.selected_file = None
 
-        # 3. Initialize Application
         self.setup_ui()
         self.initialize_system()
 
     def setup_ui(self):
-        """Configures the modern layout of the application."""
-        # Grid Layout: Sidebar (0) and Main View (1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
         # --- SIDEBAR ---
-        self.sidebar = ctk.CTkFrame(self, width=320, corner_radius=0)
+        self.sidebar = ctk.CTkFrame(self, width=320, corner_radius=0, fg_color=PAPER, border_width=1, border_color=BORDER)
         self.sidebar.grid(row=0, column=0, sticky="nsew")
-        
-        # Logo and Header
-        self.logo_label = ctk.CTkLabel(
-            self.sidebar, 
-            text="CogniHire AI", 
-            font=ctk.CTkFont(size=26, weight="bold")
-        )
-        self.logo_label.pack(pady=(30, 10), padx=20)
-        
-        self.sub_label = ctk.CTkLabel(
-            self.sidebar, 
-            text="Dynamic Ranking System", 
-            font=ctk.CTkFont(size=12),
-            text_color="gray"
-        )
-        self.sub_label.pack(pady=(0, 30), padx=20)
+        self.sidebar.grid_rowconfigure(6, weight=1)
 
-        # Dataset Selection
-        self.data_label = ctk.CTkLabel(self.sidebar, text="Candidate Dataset (.jsonl):", font=("Arial", 14, "bold"))
-        self.data_label.pack(pady=(20, 5), padx=20, anchor="w")
+        # Brand Header
+        brand_frame = ctk.CTkFrame(self.sidebar, fg_color="transparent")
+        brand_frame.grid(row=0, column=0, sticky="ew", padx=30, pady=(40, 30))
         
-        self.file_frame = ctk.CTkFrame(self.sidebar, fg_color="transparent")
-        self.file_frame.pack(pady=5, padx=20, fill="x")
+        ctk.CTkLabel(
+            brand_frame,
+            text="CogniHire",
+            font=ctk.CTkFont(family="Georgia", size=32, weight="bold"),
+            text_color=ACCENT,
+            anchor="w",
+        ).pack(anchor="w")
+        ctk.CTkLabel(
+            brand_frame,
+            text="Executive Talent Intelligence",
+            font=ctk.CTkFont(size=13, slant="italic"),
+            text_color=MUTED,
+            anchor="w",
+        ).pack(anchor="w", pady=(2, 0))
+
+        # Control Section
+        ctrl_frame = ctk.CTkFrame(self.sidebar, fg_color="transparent")
+        ctrl_frame.grid(row=1, column=0, sticky="ew", padx=20, pady=(0, 20))
+
+        # Dataset Card - Now more integrated
+        self.dataset_card = ctk.CTkFrame(ctrl_frame, fg_color=SURFACE_ALT, corner_radius=16, border_width=1, border_color=BORDER)
+        self.dataset_card.pack(fill="x", pady=(0, 20))
         
-        self.file_label = ctk.CTkLabel(self.file_frame, text="No file selected", font=("Arial", 11), wraplength=200)
-        self.file_label.pack(side="left", padx=(0, 10))
+        ctk.CTkLabel(self.dataset_card, text="SOURCE DATASET", font=ctk.CTkFont(size=10, weight="bold"), text_color=MUTED).pack(anchor="w", padx=20, pady=(15, 5))
+        self.file_label = ctk.CTkLabel(self.dataset_card, text="No file selected", font=ctk.CTkFont(size=13), wraplength=220, justify="left", text_color=TEXT)
+        self.file_label.pack(anchor="w", padx=20, pady=(0, 10))
+        self.browse_btn = ctk.CTkButton(self.dataset_card, text="Browse JSONL", command=self.browse_file, height=36, fg_color=ACCENT, hover_color=ACCENT_WARM, text_color="white", font=ctk.CTkFont(size=13, weight="bold"), corner_radius=8)
+        self.browse_btn.pack(anchor="w", padx=20, pady=(0, 15))
+
+        # Action Buttons - Grouped as a "Command Center"
+        actions_frame = ctk.CTkFrame(ctrl_frame, fg_color="transparent")
+        actions_frame.pack(fill="x")
+
+        self.run_btn = ctk.CTkButton(actions_frame, text="Execute Ranking Pipeline", command=self.run_pipeline, height=50, font=ctk.CTkFont(size=14, weight="bold"), fg_color=ACCENT, hover_color=ACCENT_WARM, text_color="white", corner_radius=12)
+        self.run_btn.pack(fill="x", pady=(0, 10))
+
+        self.export_btn = ctk.CTkButton(actions_frame, text="Export Results", command=self.export_csv, height=40, fg_color="transparent", border_width=1, border_color=BORDER_STRONG, text_color=TEXT, state="disabled", corner_radius=12)
+        self.export_btn.pack(fill="x", pady=(0, 10))
+
+        self.clear_btn = ctk.CTkButton(actions_frame, text="Clear Dashboard", command=self.clear_results, height=40, fg_color="transparent", text_color=MUTED, hover_color=SURFACE_ALT, state="disabled", corner_radius=12)
+        self.clear_btn.pack(fill="x")
+
+        # Status Card - Moved to bottom of sidebar
+        self.status_card = ctk.CTkFrame(self.sidebar, fg_color=SURFACE_ALT, corner_radius=16, border_width=1, border_color=BORDER)
+        self.status_card.grid(row=6, column=0, sticky="ew", padx=20, pady=(0, 30))
         
-        self.browse_btn = ctk.CTkButton(
-            self.file_frame, 
-            text="Browse", 
-            width=80, 
-            command=self.browse_file
-        )
-        self.browse_btn.pack(side="right")
+        ctk.CTkLabel(self.status_card, text="SYSTEM STATUS", font=ctk.CTkFont(size=10, weight="bold"), text_color=MUTED).pack(anchor="w", padx=20, pady=(15, 5))
+        self.status_chip = ctk.CTkLabel(self.status_card, text="System ready", font=ctk.CTkFont(size=13, weight="bold"), text_color=SUCCESS)
+        self.status_chip.pack(anchor="w", padx=20, pady=(0, 5))
+        self.metric_label = ctk.CTkLabel(self.status_card, text="Awaiting dataset selection", font=ctk.CTkFont(size=12), text_color=MUTED)
+        self.metric_label.pack(anchor="w", padx=20, pady=(0, 15))
 
-        # Action Buttons
-        self.run_btn = ctk.CTkButton(
-            self.sidebar, 
-            text="Execute Ranking Pipeline", 
-            font=ctk.CTkFont(size=15, weight="bold"),
-            fg_color="#1f6aa5", 
-            hover_color="#144870",
-            command=self.run_pipeline
-        )
-        self.run_btn.pack(pady=30, padx=20)
-
-        self.export_btn = ctk.CTkButton(
-            self.sidebar, 
-            text="Export Results to CSV", 
-            fg_color="transparent", 
-            border_width=2,
-            command=self.export_csv, 
-            state="disabled"
-        )
-        self.export_btn.pack(pady=10, padx=20)
-
-        # --- MAIN DISPLAY AREA ---
-        self.main_frame = ctk.CTkFrame(self, corner_radius=20)
-        self.main_frame.grid(row=0, column=1, sticky="nsew", padx=30, pady=30)
+        # --- MAIN CONTENT ---
+        self.main_frame = ctk.CTkFrame(self, corner_radius=0, fg_color=BG, border_width=0)
+        self.main_frame.grid(row=0, column=1, sticky="nsew")
         self.main_frame.grid_columnconfigure(0, weight=1)
-        self.main_frame.grid_rowconfigure(1, weight=1)
+        self.main_frame.grid_rowconfigure(2, weight=1)
 
-        # Status Bar
-        self.status_label = ctk.CTkLabel(
-            self.main_frame, 
-            text="Ready. Please select a dataset.", 
-            font=("Arial", 14),
-            text_color="white"
-        )
-        self.status_label.grid(row=0, column=0, pady=(20, 10))
+        # Top Header - More dramatic spacing
+        header_bar = ctk.CTkFrame(self.main_frame, fg_color="transparent")
+        header_bar.grid(row=0, column=0, sticky="ew", padx=50, pady=(50, 30))
+        header_bar.columnconfigure(0, weight=1)
 
-        # Execution Log Console
-        self.log_console = ctk.CTkTextbox(
-            self.main_frame, 
-            height=120, 
-            font=("Courier New", 12),
-            text_color="#A9B7C6",
-            fg_color="#1E1E1E",
-            border_width=1
-        )
-        self.log_console.grid(row=1, column=0, sticky="ew", padx=20, pady=(0, 20))
-        self.log_console.configure(state="disabled")
+        self.header_title = ctk.CTkLabel(header_bar, text="Candidate Intelligence Dashboard", font=ctk.CTkFont(family="Georgia", size=36, weight="bold"), text_color=TEXT, anchor="w")
+        self.header_title.grid(row=0, column=0, sticky="w")
+        self.status_label = ctk.CTkLabel(header_bar, text="Loading AI models…", font=ctk.CTkFont(size=15), text_color=MUTED, anchor="w")
+        self.status_label.grid(row=1, column=0, sticky="w", pady=(8, 0))
 
-        # Results Table
-        self.results_frame = ctk.CTkScrollableFrame(self.main_frame, label_text="Ranking Results")
-        self.results_frame.grid(row=2, column=0, sticky="nsew", padx=20, pady=(0, 20))
-        self.setup_results_table()
+        # Content Area
+        self.content_area = ctk.CTkFrame(self.main_frame, corner_radius=0, fg_color="transparent")
+        self.content_area.grid(row=2, column=0, sticky="nsew", padx=50, pady=(0, 50))
+        self.content_area.grid_columnconfigure(0, weight=1)
+        self.content_area.grid_rowconfigure(3, weight=1)
+
+        # Progress Section - More refined
+        self.progress_bar = ctk.CTkProgressBar(self.content_area, height=5, width=400, progress_color=ACCENT)
+        self.progress_bar.grid(row=0, column=0, sticky="w", pady=(0, 12))
+        self.progress_bar.set(0)
+
+        self.step_header = ctk.CTkLabel(self.content_area, text="Pipeline progress", font=ctk.CTkFont(size=14, weight="bold"), text_color=TEXT, anchor="w")
+        self.step_header.grid(row=1, column=0, sticky="w", pady=(0, 12))
+
+        self.step_frame = ctk.CTkFrame(self.content_area, fg_color=SURFACE_ALT, corner_radius=14, border_width=1, border_color=BORDER)
+        self.step_frame.grid(row=2, column=0, sticky="ew", pady=(0, 25))
+        self.step_frame.grid_columnconfigure(0, weight=1)
+        self.stage_names = [
+            "Loading Candidates",
+            "Precomputation",
+            "Sieve 1",
+            "Sieve 2",
+            "Sieve 3",
+            "Ranking Complete",
+        ]
+        self.stage_labels = []
+        for i, stage in enumerate(self.stage_names):
+            label = ctk.CTkLabel(
+                self.step_frame,
+                text=stage,
+                font=ctk.CTkFont(size=12),
+                fg_color=SURFACE_ALT,
+                text_color=MUTED,
+                corner_radius=12,
+                anchor="center",
+                pady=12,
+            )
+            label.grid(row=0, column=i, padx=(0 if i == 0 else 12, 0), sticky="ew")
+            self.step_frame.grid_columnconfigure(i, weight=1)
+            self.stage_labels.append(label)
+
+        self.summary_frame = ctk.CTkFrame(self.content_area, fg_color=SURFACE_ALT, corner_radius=14, border_width=1, border_color=BORDER)
+        self.summary_frame.grid(row=2, column=0, sticky="ew", pady=(0, 25))
+        self.summary_frame.grid_remove()
+        self.summary_title = ctk.CTkLabel(self.summary_frame, text="Ranking Complete", font=ctk.CTkFont(size=15, weight="bold"), text_color=TEXT, anchor="w")
+        self.summary_title.grid(row=0, column=0, sticky="w", padx=25, pady=(20, 8))
+        self.summary_details = ctk.CTkLabel(self.summary_frame, text="Total Execution Time: 0.00s (0.00 mins)", font=ctk.CTkFont(size=14), text_color=MUTED, anchor="w")
+        self.summary_details.grid(row=1, column=0, sticky="w", padx=25, pady=(0, 20))
+
+        self.table_container = ctk.CTkFrame(self.content_area, fg_color="transparent")
+        self.table_container.grid(row=3, column=0, sticky="nsew")
+        self.table_container.grid_columnconfigure(0, weight=1)
+        self.table_container.grid_rowconfigure(1, weight=1)
+
+        self.table_header = ctk.CTkFrame(self.table_container, fg_color=SURFACE_ELEV, corner_radius=14, border_width=1, border_color=BORDER)
+        self.table_header.grid(row=0, column=0, sticky="ew", pady=(0, 15))
+        self.table_header.columnconfigure(0, weight=0, minsize=60)
+        self.table_header.columnconfigure(1, weight=0, minsize=200)
+        self.table_header.columnconfigure(2, weight=0, minsize=130)
+        self.table_header.columnconfigure(3, weight=2)
+
+        ctk.CTkLabel(self.table_header, text="RANK", font=ctk.CTkFont(size=11, weight="bold"), width=60, text_color=MUTED, anchor="center").grid(row=0, column=0, padx=10, pady=15, sticky="ew")
+        ctk.CTkLabel(self.table_header, text="CANDIDATE", font=ctk.CTkFont(size=11, weight="bold"), width=200, text_color=MUTED, anchor="w").grid(row=0, column=1, padx=10, pady=15, sticky="w")
+        ctk.CTkLabel(self.table_header, text="SCORE", font=ctk.CTkFont(size=11, weight="bold"), width=130, text_color=MUTED, anchor="center").grid(row=0, column=2, padx=(25,15), pady=15, sticky="ew")
+        ctk.CTkLabel(self.table_header, text="REASONING", font=ctk.CTkFont(size=11, weight="bold"), text_color=MUTED, anchor="center").grid(row=0, column=3, padx=10, pady=15, sticky="ew")
+
+        self.table_body = ctk.CTkScrollableFrame(self.table_container, fg_color="transparent", border_width=0)
+        self.table_body.grid(row=1, column=0, sticky="nsew")
+        self.table_body.grid_columnconfigure(0, weight=1)
+
+        self._show_empty_state()
+
+    def update_progress_stage(self, index):
+        total = len(self.stage_labels) - 1
+        self.progress_bar.set(index / total)
+        for i, label in enumerate(self.stage_labels):
+            if i < index:
+                label.configure(fg_color="#ead9c2", text_color=TEXT)
+            elif i == index:
+                label.configure(fg_color=ACCENT, text_color="#fffaf2")
+            else:
+                label.configure(fg_color=SURFACE_ALT, text_color=MUTED)
+        self.step_header.configure(text=f"{self.stage_names[index]}...")
+
+    def show_summary(self, total_time_s):
+        minutes = total_time_s / 60
+        self.progress_bar.grid_remove()
+        self.step_frame.grid_remove()
+        self.step_header.configure(text="Ranking Complete")
+        self.summary_details.configure(text=f"Total Execution Time: {total_time_s:.2f}s ({minutes:.2f} mins)")
+        self.summary_frame.grid()
+
+    def reset_progress(self):
+        self.summary_frame.grid_remove()
+        self.progress_bar.grid()
+        self.step_frame.grid()
+        self.step_header.configure(text="Pipeline progress")
+        self.update_progress_stage(0)
 
     def initialize_system(self):
-        """Initializes the AI engine without loading a specific dataset first."""
         try:
-            self.status_label.configure(text="Loading AI Models...", text_color="yellow")
+            self.update_status("Loading AI models…", "#fbbf24")
+            self.progress_bar.start()
             self.update_idletasks()
             self.engine = CogniHireEngine()
-            self.status_label.configure(text="Ready. Please select a dataset.", text_color="white")
+            self.update_status("Ready to review candidate pools", "#4ade80")
+            self.progress_bar.stop()
+            self.progress_bar.set(1)
         except Exception as e:
             messagebox.showerror("Initialization Error", f"Failed to load models: {e}")
-            self.status_label.configure(text="Initialization failed", text_color="red")
+            self.update_status("Initialization failed", "#f87171")
+            self.progress_bar.stop()
 
     def browse_file(self):
-        """Allows user to select a .jsonl file."""
         file_path = filedialog.askopenfilename(
             title="Select Candidates Dataset",
-            filetypes=[("JSONL Files", "*.jsonl"), ("All Files", "*.*")]
+            filetypes=[("JSONL Files", "*.jsonl"), ("All Files", "*.*")],
         )
         if file_path:
             self.selected_file = file_path
             self.file_label.configure(text=os.path.basename(file_path))
-            self.status_label.configure(text="Dataset selected. Ready to rank.", text_color="white")
+            self.metric_label.configure(text="Dataset ready for ranking")
+            self.status_chip.configure(text="Dataset loaded", text_color="#4ade80")
+            self.update_status("Dataset selected. Ready to rank.", "#dfe8f5")
 
-    def setup_results_table(self):
-        """Creates the header for the results table."""
-        for widget in self.results_frame.winfo_children():
+    def _show_empty_state(self):
+        for widget in self.table_body.winfo_children():
             widget.destroy()
 
-        headers = ["Rank", "Candidate ID", "Score", "Reasoning"]
-        for i, header in enumerate(headers):
-            lbl = ctk.CTkLabel(self.results_frame, text=header, font=("Arial", 12, "bold"))
-            lbl.grid(row=0, column=i, padx=10, pady=5, sticky="w")
+        empty_card = ctk.CTkFrame(self.table_body, fg_color=PANEL, corner_radius=18, border_width=1, border_color=BORDER)
+        empty_card.pack(fill="x", pady=(0, 8))
+        ctk.CTkLabel(empty_card, text="No ranking results yet", font=ctk.CTkFont(size=16, weight="bold"), text_color=TEXT, anchor="w").pack(anchor="w", padx=18, pady=(16, 8))
+        ctk.CTkLabel(empty_card, text="Select a dataset and run the ranking pipeline to surface your best-fit candidates.", font=ctk.CTkFont(size=12), justify="left", text_color=MUTED).pack(anchor="w", padx=18, pady=(0, 16))
 
     def display_results(self, df):
-        """Populates the results table with DataFrame content."""
-        self.setup_results_table()
-        
+        for widget in self.table_body.winfo_children():
+            widget.destroy()
+
+        if df is None or df.empty:
+            self._show_empty_state()
+            return
+
+        self.metric_label.configure(text=f"{len(df)} candidates shortlisted")
+
         for idx, row in df.iterrows():
             rank = idx + 1
-            cid = row["candidate_id"]
-            score = str(row['score'])
-            reason = row["reasoning"]
+            candidate_id = str(row["candidate_id"])
+            score = row["score"]
+            reason = str(row.get("reasoning", ""))
 
-            ctk.CTkLabel(self.results_frame, text=str(rank)).grid(row=rank, column=0, padx=10, pady=2, sticky="w")
-            ctk.CTkLabel(self.results_frame, text=cid).grid(row=rank, column=1, padx=10, pady=2, sticky="w")
-            ctk.CTkLabel(self.results_frame, text=score).grid(row=rank, column=2, padx=10, pady=2, sticky="w")
-            
-            reason_lbl = ctk.CTkLabel(self.results_frame, text=reason, font=("Arial", 11), wraplength=600, justify="left")
-            reason_lbl.grid(row=rank, column=3, padx=10, pady=2, sticky="w")
+            row_frame = ctk.CTkFrame(self.table_body, fg_color=PANEL, corner_radius=14, border_width=1, border_color=BORDER)
+            row_frame.pack(fill="x", pady=(0, 8))
+            # Match header min sizes so columns line up exactly
+            row_frame.grid_columnconfigure(0, weight=0, minsize=60)
+            row_frame.grid_columnconfigure(1, weight=0, minsize=200)
+            row_frame.grid_columnconfigure(2, weight=0, minsize=130)
+            row_frame.grid_columnconfigure(3, weight=2)
+
+            row_frame.bind("<Enter>", lambda event, f=row_frame: f.configure(fg_color="#f3e8db"))
+            row_frame.bind("<Leave>", lambda event, f=row_frame: f.configure(fg_color=PANEL))
+
+            ctk.CTkLabel(row_frame, text=f"#{rank}", font=ctk.CTkFont(size=12, weight="bold"), width=60, text_color=ACCENT, anchor="center").grid(row=0, column=0, padx=10, pady=12, sticky="ew")
+            ctk.CTkLabel(row_frame, text=candidate_id, font=ctk.CTkFont(size=12), width=200, text_color=TEXT, anchor="w", wraplength=200).grid(row=0, column=1, padx=10, pady=12, sticky="w")
+            ctk.CTkLabel(row_frame, text=str(score), font=ctk.CTkFont(size=12, weight="bold"), width=130, anchor="center", text_color=SUCCESS).grid(row=0, column=2, padx=(25,15), pady=12, sticky="ew")
+            reason_label = ctk.CTkLabel(row_frame, text=reason, font=ctk.CTkFont(size=12), justify="left", wraplength=1000, text_color=MUTED, anchor="w")
+            reason_label.grid(row=0, column=3, padx=10, pady=12, sticky="w")
+            if hasattr(ctk, "CTkToolTip"):
+                ctk.CTkToolTip(reason_label, text=reason)
 
     def run_pipeline(self):
-        """Main pipeline execution flow: Load -> Precompute -> Rank."""
-        if not hasattr(self, 'selected_file') or not self.selected_file:
+        if not hasattr(self, "selected_file") or not self.selected_file:
             messagebox.showwarning("No File", "Please select a .jsonl dataset first.")
             return
 
@@ -184,86 +300,85 @@ class CogniHireApp(ctk.CTk):
         jd_text = TARGET_JD
 
         self.run_btn.configure(state="disabled")
-        self.status_label.configure(text="🚀 Processing... Please wait.", text_color="yellow")
+        self.export_btn.configure(state="disabled")
+        self.update_status("Processing candidate shortlist…", "#fbbf24")
+        self.reset_progress()
+        self.progress_bar.start()
         self.update_idletasks()
 
-        # Run the heavy pipeline in a separate thread to keep GUI responsive
         threading.Thread(target=self._execute_pipeline_thread, args=(jd_text,), daemon=True).start()
 
     def update_status(self, text, color="white"):
-        """Thread-safe method to update the status label."""
         self.after(0, lambda: self.status_label.configure(text=text, text_color=color))
 
-    def log_message(self, message):
-        """Thread-safe method to append logs to the console."""
-        def append():
-            self.log_console.configure(state="normal")
-            self.log_console.insert("end", f"{message}\n")
-            self.log_console.see("end")
-            self.log_console.configure(state="disabled")
-        self.after(0, append)
+    def clear_results(self):
+        self.last_results = None
+        self._show_empty_state()
+        self.export_btn.configure(state="disabled")
+        self.clear_btn.configure(state="disabled")
+        self.metric_label.configure(text="Results cleared")
+        self.status_chip.configure(text="Results cleared", text_color=MUTED)
+        self.update_status("Results cleared", ACCENT)
 
     def _execute_pipeline_thread(self, jd_text):
-        """Internal thread method to handle the heavy lifting."""
         import time
         start_time = time.time()
         try:
-            self.log_message("🚀 Starting pipeline execution...")
-            
-            # 1. Load Candidates
-            self.update_status("📂 Loading candidates...", "yellow")
-            self.log_message(f"Loading candidates from {os.path.basename(self.selected_file)}...")
+            self.update_status("Loading candidates…", "#fbbf24")
+            self.after(0, lambda: self.update_progress_stage(0))
             self.candidates = load_candidates(self.selected_file)
             if not self.candidates:
                 raise ValueError("Failed to load candidates from the selected file.")
-            self.log_message(f"✅ Successfully loaded {len(self.candidates)} candidates.")
 
-            # 2. Precompute
-            self.update_status("⚙️  Precomputing embeddings & index...", "yellow")
-            self.log_message("⚙️  Executing precompute.py workflow...")
+            self.after(0, lambda: self.update_progress_stage(1))
+            self.update_status("Precomputing embeddings…", "#fbbf24")
             pre_start = time.time()
             self.engine.precompute_on_fly(self.candidates)
-            self.log_message(f"✅ Precomputation complete. Time: {time.time() - pre_start:.2f}s")
 
-            # 3. Rank
-            self.update_status("🧠 Ranking and generating reasoning...", "yellow")
-            self.log_message("🧠 Running Sieve 1, 2, and 3 (Reranking)...")
+            self.after(0, lambda: self.update_progress_stage(2))
+            self.update_status("Preparing semantic recall…", "#fbbf24")
+            self.after(0, lambda: self.update_progress_stage(3))
+            self.update_status("Applying intelligence filters…", "#fbbf24")
+            self.after(0, lambda: self.update_progress_stage(4))
+            self.update_status("Performing precision rerank…", "#fbbf24")
             rank_start = time.time()
             results_df = self.engine.run_pipeline(self.candidates, jd_text)
-            self.log_message(f"✅ Ranking complete. Time: {time.time() - rank_start:.2f}s")
-            
-            total_time_s = time.time() - start_time
-            total_time_m = total_time_s / 60
-            self.log_message(f"✨ Total execution time: {total_time_s:.2f}s ({total_time_m:.2f} mins)")
-            
-            # Update UI on the main thread
-            self.after(0, lambda: self._finalize_pipeline(results_df))
-            
-        except Exception as e:
-            self.log_message(f"❌ Error: {str(e)}")
-            # Use a default argument in lambda to capture the current value of 'e'
-            self.after(0, lambda err=e: self._handle_pipeline_error(err))
 
-    def _finalize_pipeline(self, results_df):
-        """Updates the UI after successful pipeline execution."""
+            total_time_s = time.time() - start_time
+            self.after(0, lambda: self.update_progress_stage(5))
+            self.after(0, lambda: self.show_summary(total_time_s))
+            self.after(0, lambda: self._finalize_pipeline(results_df, total_time_s))
+
+        except Exception as e:
+            self.after(0, lambda: self._handle_pipeline_error(e))
+
+    def _finalize_pipeline(self, results_df, total_time_s):
         self.display_results(results_df)
         self.last_results = results_df
-        self.status_label.configure(text="✅ Ranking Complete!", text_color="green")
+        self.update_status("Ranking complete", "#4ade80")
         self.export_btn.configure(state="normal")
+        self.clear_btn.configure(state="normal")
         self.run_btn.configure(state="normal")
+        self.progress_bar.stop()
+        self.progress_bar.set(1)
+        self.status_chip.configure(text="Ranking complete", text_color="#4ade80")
+        self.metric_label.configure(text=f"{len(results_df)} candidates shortlisted")
+        self.summary_details.configure(text=f"Total Execution Time: {total_time_s:.2f}s ({(total_time_s/60):.2f} mins)")
 
     def _handle_pipeline_error(self, e):
-        """Handles errors from the pipeline thread."""
         messagebox.showerror("Pipeline Error", str(e))
-        self.status_label.configure(text="❌ Execution failed", text_color="red")
+        self.update_status("Execution failed", "#f87171")
         self.run_btn.configure(state="normal")
+        self.progress_bar.stop()
+        self.progress_bar.set(0)
+        self.status_chip.configure(text="Execution failed", text_color="#f87171")
 
     def export_csv(self):
         if self.last_results is not None:
             save_path = filedialog.asksaveasfilename(
                 defaultextension=".csv",
                 initialfile="cognihire_results.csv",
-                title="Save Ranking Results"
+                title="Save Ranking Results",
             )
             if save_path:
                 self.last_results.to_csv(save_path, index=False)
