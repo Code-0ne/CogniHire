@@ -3,11 +3,11 @@ import numpy as np
 import faiss
 import pandas as pd
 from sentence_transformers import SentenceTransformer, CrossEncoder
-from src.text_builder import build_rich_txt
 from src.sieve_engine import sieve_2
 from src.ranker import rank_candidates
 from src.res_gen import generate_reasoning
 from src.config import *
+from src.precompute import generate_candidate_embeddings_parallel, build_and_save_faiss_index, setup_artifacts
 
 class CogniHireEngine:
     def __init__(self):
@@ -26,8 +26,6 @@ class CogniHireEngine:
         Runs the full precompute logic to generate physical artifacts on disk.
         Matches the workflow of precompute.py.
         """
-        from src.precompute import generate_candidate_embeddings_parallel, build_and_save_faiss_index, setup_artifacts
-        import numpy as np
         
         print("⚙️  Executing precompute.py workflow...")
         setup_artifacts()
@@ -43,9 +41,12 @@ class CogniHireEngine:
         build_and_save_faiss_index(embeddings)
         
         # 4. Precompute and Save JD target vector (using the default TARGET_JD from config)
-        from src.config import TARGET_JD, JD_EMBEDDING_PATH
+
         print("Precomputing JD target vector...")
-        jd_vec = self.embed_model.encode([TARGET_JD]).astype('float32')
+        jd_vec = self.embed_model.encode([TARGET_JD],convert_to_numpy=True).astype('float32')
+
+        faiss.normalize_L2(jd_vec)
+
         np.save(JD_EMBEDDING_PATH, jd_vec)
         print(f"✅ JD embedding saved to {JD_EMBEDDING_PATH}")
         
@@ -61,14 +62,16 @@ class CogniHireEngine:
 
     def run_pipeline(self, candidates, jd_text):
         # 1. Sieve 1: Semantic Recall (Using Dynamic/Precomputed Index)
-        jd_vec = self.embed_model.encode([jd_text]).astype('float32')
+        jd_vec = self.embed_model.encode([jd_text],convert_to_numpy=True).astype("float32")
+
+        faiss.normalize_L2(jd_vec)
         
         D, I = self.index.search(jd_vec, TOP_K_RECALL)
         distances = D[0].tolist()
         top_indices = I[0].tolist()
 
         # 2. Sieve 2: Intelligence Filter
-        scored_candidates = sieve_2(distances, top_indices, candidates)
+        scored_candidates = sieve_2(distances, top_indices, candidates,jd_text)
 
         # 3. Sieve 3: Precision Rerank (Using ranker.py logic)
         final_100 = rank_candidates(scored_candidates[:600], candidates, jd_text, self.cross_model)
@@ -76,8 +79,15 @@ class CogniHireEngine:
         # 5. Reasoning Generation
         submission_data = []
         for rank, res in enumerate(final_100, 1):
-            cand_obj = candidates[res["index"]]
-            reasoning = generate_reasoning(cand_obj, rank, res["score"])
+             # Copy original candidate
+            cand_obj = candidates[res["index"]].copy()
+
+            # Preserve metadata generated during sieve/ranking
+            cand_obj["required_skill_hits"] = res.get("required_skill_hits", [])
+            cand_obj["preferred_skill_hits"] = res.get("preferred_skill_hits", [])
+            cand_obj["system_hits"] = res.get("system_hits", [])
+            reasoning = generate_reasoning(cand_obj,rank,res["score"],jd_text)
+
             submission_data.append({
                 "candidate_id": res["candidate_id"],
                 "rank": rank,

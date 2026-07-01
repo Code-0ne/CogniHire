@@ -76,7 +76,9 @@ def main():
         build_and_save_faiss_index(embeddings)
         
         print("Precomputing JD target vector...")
-        jd_vec = model.encode([target_jd]).astype('float32')
+        jd_vec = model.encode([target_jd], convert_to_numpy=True).astype("float32")
+        faiss.normalize_L2(jd_vec)
+        
         np.save(JD_EMBEDDING_PATH, jd_vec)
         
         end_time = time.time()

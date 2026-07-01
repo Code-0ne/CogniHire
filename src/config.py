@@ -2,8 +2,6 @@
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 CROSS_ENCODER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
 
-
-
 TARGET_JD = """
 Senior AI Engineer – Founding Team at Redrob AI.
 
@@ -190,19 +188,7 @@ RESEARCH_KEYWORDS = {
     "theoretical",
     "thesis",
     "phd",
-}
-
-# Experience Preferences
-
-IDEAL_TOTAL_EXP = (6, 8)
-IDEAL_ML_EXP = (4, 5)
-
-EXP_SWEET_SPOT_BONUS = 1.10
-
-EXP_SWEET_SPOT_BONUS = 1.10
-
-# Location Preferences
- 
+} 
 
 LOCATION_BONUSES = {
     "pune": 1.20,
@@ -214,6 +200,8 @@ LOCATION_BONUSES = {
 }
 
 DEFAULT_LOCATION_MULTIPLIER = 0.95
+
+JD_LOCATION_MATCH_BONUS = 1.15
 
 # Behaviour Thresholds
 

@@ -4,6 +4,8 @@ import os
 import threading
 from src.pipeline import CogniHireEngine
 from src.loader import load_candidates
+from src.config import TARGET_JD
+import time
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -23,14 +25,13 @@ TEXT = "#111111"
 MUTED = "#6f6a63"
 SUCCESS = "#4f6f52"
 
-
 class CogniHireApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("CogniHire | Executive Talent Intelligence")
+        self.title("CogniHire | Predictive Talent Intelligence Engine")
         self.geometry("1280x700")
-        self.minsize(1280, 740)
+        self.minsize(1280, 700)
         self.configure(fg_color=BG)
 
         self.candidates = None
@@ -63,7 +64,7 @@ class CogniHireApp(ctk.CTk):
         ).pack(anchor="w")
         ctk.CTkLabel(
             brand_frame,
-            text="Executive Talent Intelligence",
+            text="Predictive Talent Intelligence Engine",
             font=ctk.CTkFont(size=13, slant="italic"),
             text_color=MUTED,
             anchor="w",
@@ -103,6 +104,12 @@ class CogniHireApp(ctk.CTk):
         ctk.CTkLabel(self.status_card, text="SYSTEM STATUS", font=ctk.CTkFont(size=10, weight="bold"), text_color=MUTED).pack(anchor="w", padx=20, pady=(15, 5))
         self.status_chip = ctk.CTkLabel(self.status_card, text="System ready", font=ctk.CTkFont(size=13, weight="bold"), text_color=SUCCESS)
         self.status_chip.pack(anchor="w", padx=20, pady=(0, 5))
+        
+        self.artifacts_label = ctk.CTkLabel(self.status_card, text="Artifacts Loaded", font=ctk.CTkFont(size=12), text_color=MUTED)
+        self.artifacts_label.pack(anchor="w", padx=20, pady=(2, 0))
+        self.faiss_label = ctk.CTkLabel(self.status_card, text="FAISS Ready", font=ctk.CTkFont(size=12), text_color=MUTED)
+        self.faiss_label.pack(anchor="w", padx=20, pady=(2, 0))
+        
         self.metric_label = ctk.CTkLabel(self.status_card, text="Awaiting dataset selection", font=ctk.CTkFont(size=12), text_color=MUTED)
         self.metric_label.pack(anchor="w", padx=20, pady=(0, 15))
 
@@ -129,9 +136,15 @@ class CogniHireApp(ctk.CTk):
         self.content_area.grid_rowconfigure(3, weight=1)
 
         # Progress Section - More refined
-        self.progress_bar = ctk.CTkProgressBar(self.content_area, height=5, width=400, progress_color=ACCENT)
-        self.progress_bar.grid(row=0, column=0, sticky="w", pady=(0, 12))
+        self.progress_container = ctk.CTkFrame(self.content_area, fg_color="transparent")
+        self.progress_container.grid(row=0, column=0, sticky="w", pady=(0, 12))
+        
+        self.progress_bar = ctk.CTkProgressBar(self.progress_container, height=12, width=400, progress_color=ACCENT)
+        self.progress_bar.pack(side="left", padx=(0, 10))
         self.progress_bar.set(0)
+        
+        self.progress_text = ctk.CTkLabel(self.progress_container, text="0%", font=ctk.CTkFont(family="Courier", size=12, weight="bold"), text_color=TEXT)
+        self.progress_text.pack(side="left")
 
         self.step_header = ctk.CTkLabel(self.content_area, text="Pipeline progress", font=ctk.CTkFont(size=14, weight="bold"), text_color=TEXT, anchor="w")
         self.step_header.grid(row=1, column=0, sticky="w", pady=(0, 12))
@@ -166,9 +179,11 @@ class CogniHireApp(ctk.CTk):
         self.summary_frame = ctk.CTkFrame(self.content_area, fg_color=SURFACE_ALT, corner_radius=14, border_width=1, border_color=BORDER)
         self.summary_frame.grid(row=2, column=0, sticky="ew", pady=(0, 25))
         self.summary_frame.grid_remove()
-        self.summary_title = ctk.CTkLabel(self.summary_frame, text="Ranking Complete", font=ctk.CTkFont(size=15, weight="bold"), text_color=TEXT, anchor="w")
-        self.summary_title.grid(row=0, column=0, sticky="w", padx=25, pady=(20, 8))
-        self.summary_details = ctk.CTkLabel(self.summary_frame, text="Total Execution Time: 0.00s (0.00 mins)", font=ctk.CTkFont(size=14), text_color=MUTED, anchor="w")
+        
+        self.summary_title = ctk.CTkLabel(self.summary_frame, text="Ranking Complete", font=ctk.CTkFont(size=16, weight="bold"), text_color=TEXT, anchor="w")
+        self.summary_title.grid(row=0, column=0, sticky="w", padx=25, pady=(20, 10))
+        
+        self.summary_details = ctk.CTkLabel(self.summary_frame, text="", font=ctk.CTkFont(size=14), text_color=MUTED, anchor="w", justify="left")
         self.summary_details.grid(row=1, column=0, sticky="w", padx=25, pady=(0, 20))
 
         self.table_container = ctk.CTkFrame(self.content_area, fg_color="transparent")
@@ -196,7 +211,9 @@ class CogniHireApp(ctk.CTk):
 
     def update_progress_stage(self, index):
         total = len(self.stage_labels) - 1
-        self.progress_bar.set(index / total)
+        progress = index / total
+        self.progress_bar.set(progress)
+        self.progress_text.configure(text=f"{int(progress * 100)}%")
         for i, label in enumerate(self.stage_labels):
             if i < index:
                 label.configure(fg_color="#ead9c2", text_color=TEXT)
@@ -206,17 +223,20 @@ class CogniHireApp(ctk.CTk):
                 label.configure(fg_color=SURFACE_ALT, text_color=MUTED)
         self.step_header.configure(text=f"{self.stage_names[index]}...")
 
-    def show_summary(self, total_time_s):
+    def show_summary(self, total_time_s, results_df, precompute_time=0, ranking_time=0):
         minutes = total_time_s / 60
-        self.progress_bar.grid_remove()
+        
+        summary_text = f" Total Execution Time: {total_time_s:.2f}s ({minutes:.2f} mins) | Precompute: {precompute_time:.2f}s | Rank: {ranking_time:.2f}s"
+        
+        self.progress_container.grid_remove()
         self.step_frame.grid_remove()
         self.step_header.configure(text="Ranking Complete")
-        self.summary_details.configure(text=f"Total Execution Time: {total_time_s:.2f}s ({minutes:.2f} mins)")
+        self.summary_details.configure(text=summary_text)
         self.summary_frame.grid()
 
     def reset_progress(self):
         self.summary_frame.grid_remove()
-        self.progress_bar.grid()
+        self.progress_container.grid()
         self.step_frame.grid()
         self.step_header.configure(text="Pipeline progress")
         self.update_progress_stage(0)
@@ -286,7 +306,8 @@ class CogniHireApp(ctk.CTk):
             ctk.CTkLabel(row_frame, text=f"#{rank}", font=ctk.CTkFont(size=12, weight="bold"), width=60, text_color=ACCENT, anchor="center").grid(row=0, column=0, padx=10, pady=12, sticky="ew")
             ctk.CTkLabel(row_frame, text=candidate_id, font=ctk.CTkFont(size=12), width=200, text_color=TEXT, anchor="w", wraplength=200).grid(row=0, column=1, padx=10, pady=12, sticky="w")
             ctk.CTkLabel(row_frame, text=str(score), font=ctk.CTkFont(size=12, weight="bold"), width=130, anchor="center", text_color=SUCCESS).grid(row=0, column=2, padx=(25,15), pady=12, sticky="ew")
-            reason_label = ctk.CTkLabel(row_frame, text=reason, font=ctk.CTkFont(size=12), justify="left", wraplength=1000, text_color=MUTED, anchor="w")
+            reason_label = ctk.CTkLabel(row_frame, text=reason, font=ctk.CTkFont(size=12), justify="left", wraplength=1200, text_color=MUTED, anchor="w")
+            reason_label.configure(justify="left")
             reason_label.grid(row=0, column=3, padx=10, pady=12, sticky="w")
             if hasattr(ctk, "CTkToolTip"):
                 ctk.CTkToolTip(reason_label, text=reason)
@@ -296,7 +317,6 @@ class CogniHireApp(ctk.CTk):
             messagebox.showwarning("No File", "Please select a .jsonl dataset first.")
             return
 
-        from src.config import TARGET_JD
         jd_text = TARGET_JD
 
         self.run_btn.configure(state="disabled")
@@ -321,7 +341,6 @@ class CogniHireApp(ctk.CTk):
         self.update_status("Results cleared", ACCENT)
 
     def _execute_pipeline_thread(self, jd_text):
-        import time
         start_time = time.time()
         try:
             self.update_status("Loading candidates…", "#fbbf24")
@@ -334,6 +353,11 @@ class CogniHireApp(ctk.CTk):
             self.update_status("Precomputing embeddings…", "#fbbf24")
             pre_start = time.time()
             self.engine.precompute_on_fly(self.candidates)
+            precompute_time = time.time() - pre_start
+            
+            # Update status labels with ticks after precomputation
+            self.after(0, lambda: self.artifacts_label.configure(text="Artifacts Loaded ✓", text_color=SUCCESS))
+            self.after(0, lambda: self.faiss_label.configure(text="FAISS Ready ✓", text_color=SUCCESS))
 
             self.after(0, lambda: self.update_progress_stage(2))
             self.update_status("Preparing semantic recall…", "#fbbf24")
@@ -343,10 +367,11 @@ class CogniHireApp(ctk.CTk):
             self.update_status("Performing precision rerank…", "#fbbf24")
             rank_start = time.time()
             results_df = self.engine.run_pipeline(self.candidates, jd_text)
+            ranking_time = time.time() - rank_start
 
             total_time_s = time.time() - start_time
             self.after(0, lambda: self.update_progress_stage(5))
-            self.after(0, lambda: self.show_summary(total_time_s))
+            self.after(0, lambda: self.show_summary(total_time_s, results_df, precompute_time, ranking_time))
             self.after(0, lambda: self._finalize_pipeline(results_df, total_time_s))
 
         except Exception as e:
@@ -355,15 +380,27 @@ class CogniHireApp(ctk.CTk):
     def _finalize_pipeline(self, results_df, total_time_s):
         self.display_results(results_df)
         self.last_results = results_df
-        self.update_status("Ranking complete", "#4ade80")
+        self.update_status("Ready", "#4ade80")
         self.export_btn.configure(state="normal")
         self.clear_btn.configure(state="normal")
         self.run_btn.configure(state="normal")
         self.progress_bar.stop()
         self.progress_bar.set(1)
-        self.status_chip.configure(text="Ranking complete", text_color="#4ade80")
-        self.metric_label.configure(text=f"{len(results_df)} candidates shortlisted")
-        self.summary_details.configure(text=f"Total Execution Time: {total_time_s:.2f}s ({(total_time_s/60):.2f} mins)")
+        self.status_chip.configure(text="Ready", text_color="#4ade80")
+        
+        # Update System Status card with detailed metrics
+        total_processed = len(self.candidates) if self.candidates else 0
+        shortlisted = len(results_df) if results_df is not None else 0
+        top_score = results_df.iloc[0]["score"] if results_df is not None and not results_df.empty else 0.0
+        avg_top_100 = results_df["score"].head(100).mean() if results_df is not None and not results_df.empty else 0.0
+        
+        metrics_text = (
+            f"Candidates Processed: {total_processed:,}\n"
+            f"Candidates Shortlisted: {shortlisted:,}\n"
+            f"Top Candidate Score: {top_score:.3f}\n"
+            f"Avg Top-100 Score: {avg_top_100:.3f}"
+        )
+        self.metric_label.configure(text=metrics_text)
 
     def _handle_pipeline_error(self, e):
         messagebox.showerror("Pipeline Error", str(e))

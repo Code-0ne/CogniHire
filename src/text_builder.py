@@ -1,4 +1,5 @@
 from .config import PRODUCTION_KEYWORDS, RESEARCH_KEYWORDS, REQUIRED_DOMAIN_KEYWORDS
+from src.trajectory_engine import calculate_trajectory_scores
 
 def build_rich_txt(candidate):
     parts = []
@@ -54,14 +55,14 @@ def build_rich_txt(candidate):
             f"Notice: {sig.get('notice_period_days', 'N/A')} days",
             f"Recruiter Response: {sig.get('recruiter_response_rate', 'N/A')}",
             f"GitHub Score: {sig.get('github_activity_score', 'N/A')}",
-            f"Saved by Recruiters: {sig.get('saved_by_recruit_ la 30d', 'N/A')}",
+            f"Saved by Recruiters: {sig.get('saved_by_recruiters_30d', 'N/A')}",
             f"Interview Rate: {sig.get('interview_completion_rate', 'N/A')}",
             f"Completeness: {sig.get('profile_completeness_score', 'N/A')}%"
         ]
         parts.append(f"[SIGNALS]: {' | '.join(sig_parts)}")
 
     # 6. Structured Trajectory Summary (For CrossEncoder Reasoning)
-    from src.trajectory_engine import calculate_trajectory_scores
+    
     traj = calculate_trajectory_scores(candidate)
     traj_summary = [
         f"Product Years: {traj['product_company_years']}",

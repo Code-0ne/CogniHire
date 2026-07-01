@@ -24,6 +24,22 @@ def sieve_2(distances, indices, candidates, jd_text=None):
 
 
     jd = get_jd_cont(jd_text)
+    # ---------------- Dynamic JD ---------------- #
+
+    required_skills = set(jd.get("required_skills", []))
+    preferred_skills = set(jd.get("preferred_skills", []))
+    system_keywords = set(jd.get("system_keywords", []))
+    preferred_candidate = set(jd.get("preferred_candidate", []))
+    target_locations = jd.get("target_locations", ["india"])
+    disqualifiers = set(jd.get("disqualifiers", []))
+    evaluation_frameworks = set(jd.get("evaluation_frameworks", []))
+    vector_dbs = set(jd.get("vector_databases", []))
+
+    min_exp = jd.get("min_yoe", 0)
+    max_exp = jd.get("max_yoe", None)
+
+    production_required = jd.get("production_required", False)
+    research_friendly = jd.get("research_friendly", False)
 
     for dist, idx in zip(distances, indices):
         cand = candidates[idx]
@@ -44,15 +60,27 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         companies = [j.get("company", "").lower() for j in career]
         
         # Calculate Consulting Ratio
-        consulting_months = sum([j.get("duration_months", 0) for j in career if any(c in j.get("company", "").lower() for c in CONSULTING_FIRMS)])
-        total_months = sum([j.get("duration_months", 0) for j in career])
-        
-        if total_months > 0:
-            consulting_ratio = consulting_months / total_months
-            if consulting_ratio > 0.8:
-                continue 
-        elif companies and all(any(c in comp for c in CONSULTING_FIRMS) for comp in companies):
-            continue 
+        if "pure_consulting" in disqualifiers:
+            consulting_months = sum(
+                j.get("duration_months", 0)
+                for j in career
+                if any(
+                    c in j.get("company", "").lower()
+                    for c in CONSULTING_FIRMS
+                )
+            )
+
+            if total_months > 0:
+                consulting_ratio = consulting_months / total_months
+
+                if consulting_ratio > 0.8:
+                    continue
+
+            elif companies and all(
+                any(c in comp for c in CONSULTING_FIRMS)
+                for comp in companies
+            ):
+                continue
 
      
         rich_text = " ".join([j.get("description", "") for j in career]).lower()
@@ -61,21 +89,45 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         
         # Domain Relevance Scoring (Replaces brittle hard filter)
         # Instead of 'continue', we calculate relevance. If 0 hits, we penalize but don't discard.
-        domain_hits = [word for word in REQUIRED_DOMAIN_KEYWORDS if word in full_profile_text]
-        relevance_score = len(domain_hits)
-        
-        if relevance_score == 0:
-            multiplier *= 0.3  # Heavy penalty for zero domain keywords, but keep them in the pool
-        else:
-            multiplier += (relevance_score * 0.02) # Small bonus for keyword density
+        domain_hits = [
+            skill
+            for skill in required_skills
+            if skill in full_profile_text
+        ]
 
-        # Calculate Structured Trajectory Features
+        preferred_hits = [
+            skill
+            for skill in preferred_skills
+            if skill in full_profile_text
+        ]
+
+        relevance_score = len(domain_hits)
+
+        if relevance_score == 0:
+            multiplier *= 0.30
+        else:
+            multiplier += relevance_score * 0.02
+
+        multiplier += len(preferred_hits) * 0.03
+
+        # System Engineering Match
+        system_hits = [
+            word for word in system_keywords
+            if word in full_profile_text
+        ]
+
+        if system_hits:
+            multiplier += min(len(system_hits) * 0.03, 0.15)
+
         traj = calculate_trajectory_scores(cand)
         
         # 1. ExperienceSweet Spot (5-9 years)
         total_yoe = traj["product_company_years"] + traj["consulting_years"]
-        if IDEAL_TOTAL_EXP[0] <= total_yoe <= IDEAL_TOTAL_EXP[1]:
+
+        if min_exp <= total_yoe <= (max_exp or total_yoe):
             multiplier += 0.15
+        if max_exp is not None and total_yoe > max_exp + 2:
+            multiplier -= 0.05
         elif total_yoe < 3:
             multiplier += SIGNAL_MODIFIERS["exp_under_3_penalty"]
         elif total_yoe < 4:
@@ -90,28 +142,31 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         multiplier += (min(traj["nlp_years"], 5) * 0.05)          # +5% per year of NLP (max 5)
         
         # 3. Critical Infrastructure Bonus
-        if traj["vector_db_deployments"] >= 2:
-            multiplier += 0.2
+        if vector_dbs:
+            if traj["vector_db_deployments"] >= 1:
+                multiplier += 0.20
             
         # 4. Engineering Quality Signals
-        if traj["eval_framework_score"] >= 2:
-            multiplier += 0.1
+        if evaluation_frameworks:
+            if traj["eval_framework_score"] >= max(1, len(evaluation_frameworks)//2):
+                multiplier += 0.10
         if traj["open_source_score"] == 1:
             multiplier += 0.1
 
         # 5. Role-based Modifiers
         if traj["manager_years"] > 3:
             multiplier -= 0.1  # Slight penalty for too much management vs coding
-        if traj["research_years"] > 4 and traj["production_ml_years"] < 2:
-            red_flags += 1  # Penalty for "Pure Research" without production
+        if ( not research_friendly and traj["research_years"] > 4 and traj["production_ml_years"] < 2):
+            red_flags += 1
 
         # Direct Production Experience Scoring
         # Reward candidates who mention scaling, monitoring, indexing, etc.
-        prod_keywords = PRODUCTION_KEYWORDS.union({"monitoring", "indexing", "observability", "kubernetes", "docker", "terraform"})
+        prod_keywords = set(jd.get("production_signals", PRODUCTION_KEYWORDS)).union({"monitoring", "indexing", "observability", "kubernetes", "docker", "terraform"})
 
         prod_hits = [word for word in prod_keywords if word in full_profile_text]
-        if len(prod_hits) >= 3:
-            multiplier += SIGNAL_MODIFIERS["production_exp_bonus"]
+        if production_required:
+            if len(prod_hits) >= 3:
+                multiplier += SIGNAL_MODIFIERS["production_exp_bonus"]
 
         if len(career) > 1:
             avg_tenure = yoe / len(career)
@@ -171,30 +226,61 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         if sig.get("saved_by_recruiters_30d", 0) > 5:
             multiplier += SIGNAL_MODIFIERS["high_demand_bonus"]
 
+        # ---------------- Preferred Candidate ---------------- #
+
+        if "short_notice" in preferred_candidate:
+            if notice < 30:
+                multiplier += 0.10
+
+        if "high_recruiter_engagement" in preferred_candidate:
+            if sig.get("saved_by_recruiters_30d", 0) > 5:
+                multiplier += 0.10
+
+        if "recent_production" in preferred_candidate:
+            if len(prod_hits) >= 3:
+                multiplier += 0.10
+
         # 3. Last Active Date (Recency check)
         # Simple check: if they haven't been active, apply inactive penalty
         # (Assuming a date string format, we just check if it exists for now)
         if not sig.get("last_active_date"):
             multiplier += SIGNAL_MODIFIERS["inactive_penalty"]
         
-
-   
         loc = cand.get("profile", {}).get("location", "").lower()
         loc_multiplier = DEFAULT_LOCATION_MULTIPLIER
-        for city, bonus in LOCATION_BONUSES.items():
-            if city in loc:
-                loc_multiplier = bonus
-                break
+
+        if any(city in loc for city in target_locations):
+            loc_multiplier = JD_LOCATION_MATCH_BONUS
+
         multiplier *= loc_multiplier
 
+        if "computer_vision" in disqualifiers and "computer vision" in full_profile_text:
+            red_flags += 1
 
+        if "robotics" in disqualifiers and "robotics" in full_profile_text:
+            red_flags += 1
+
+        if "speech" in disqualifiers and "speech" in full_profile_text:
+            red_flags += 1
+
+        if "langchain_demo" in disqualifiers:
+            if "langchain" in full_profile_text and "production" not in full_profile_text:
+                red_flags += 1
+
+        multiplier = max(0.2, min(multiplier, 3.0))
         final_multiplier = multiplier * (RED_FLAG_PENALTY ** red_flags)
         
         scored_candidates.append({
             "index": idx,
             "candidate_id": cand["candidate_id"],
             "sieve2_score": base_score * final_multiplier,
-            "red_flags": red_flags
+            "red_flags": red_flags,
+            "required_skill_hits": domain_hits,
+            "preferred_skill_hits": preferred_hits,
+            "system_hits": system_hits,
+            "trajectory": traj,
+            "experience": total_yoe,
+            "behavior_multiplier": multiplier
         })
 
     scored_candidates.sort(key=lambda x: x["sieve2_score"], reverse=True)
