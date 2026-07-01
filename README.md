@@ -1,157 +1,379 @@
-# 🚀 CogniHire: Predictive Talent Intelligence Engine
+# 🚀 CogniHire – Predictive Talent Intelligence Engine
 
-**Built for the Redrob Intelligent Candidate Discovery Challenge**
+> **Built for the Redrob Intelligent Candidate Discovery Challenge**
 
-CogniHire is a high-performance ranking engine designed to discover "hidden gems" within massive talent pools. Moving beyond surface-level keyword matching, CogniHire evaluates **semantic fit, career trajectory, behavioral signals, and production readiness** to generate a precise, explainable, and high-confidence shortlist.
+CogniHire is an AI-powered candidate ranking engine that discovers high-quality talent by combining **semantic retrieval, structured career trajectory analysis, behavioral intelligence, and neural reranking**.
 
----
-
-## 🎯 The Core Challenge
-
-The objective was to identify and rank the top 100 candidates from a pool of 100,000 while meeting strict production constraints to ensure scalability and cost-efficiency:
-
-* **Runtime:** $\le 5$ minutes for the ranking step.
-* **Hardware:** CPU-only environment.
-* **Memory:** $\le 16$ GB RAM.
-* **Network:** Fully offline (no external API calls during ranking).
-* **Accuracy:** High NDCG and robustness against honeypot profiles.
+Unlike traditional ATS systems that rely on keyword matching, CogniHire evaluates **what candidates have built, how their careers have progressed, and how closely they align with the hiring intent of a Job Description**.
 
 ---
 
-## 🏗️ Architecture Overview
+# ✨ Features
 
-CogniHire implements a multi-stage **Three-Sieve Pipeline** to balance extreme retrieval speed with deep precision.
+- 🔍 Semantic Candidate Retrieval using Sentence Transformers + FAISS
+- 📈 Career Trajectory Analysis
+- 🧠 Dynamic Job Description Understanding
+- 🎯 Behavioral Signal Modeling
+- 🤖 CrossEncoder Precision Reranking
+- 📊 Explainable AI Reasoning
+- ⚡ CPU-only Inference
+- 🖥 Modern Desktop GUI (CustomTkinter)
+- 🐳 Docker Support
+- 📦 uv Package Management
 
-### The Pipeline Flow
+---
+
+# 🎯 Challenge Objectives
+
+CogniHire was designed for the Redrob AI Hiring Challenge while satisfying strict production constraints.
+
+- ✅ Rank Top-100 candidates from 100K profiles
+- ✅ CPU-only execution
+- ✅ ≤16 GB RAM
+- ✅ Offline inference
+- ✅ Explainable rankings
+- ✅ Robust against honeypot profiles
+
+---
+
+# 🏗 System Architecture
 
 ```text
-100,000 Candidates
+Candidate JSONL
         │
         ▼
-┌─────────────────────┐
-│  Sieve 1: Recall    │  (FAISS + all-MiniLM-L6-v2)
-│  Semantic Search    │  → Reduces 100k to Top 3,000
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│  Sieve 2: Intelligence│  (Rule-based Logic & Signal Weights)
-│  Trap & Persona Filter│  → Reduces 3,000 to Top 200
-└──────────┬──────────┘
-           │
-           ▼
-┌─────────────────────┐
-│  Sieve 3: Precision  │  (Local Cross-Encoder)
-│  Deep Reranking     │  → Produces Final Top 100
-└──────────┬──────────┘
-           │
-           ▼
-       Top 100
+Rich Candidate Builder
+        │
+        ▼
+SentenceTransformer Embeddings
+        │
+        ▼
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SIEVE 1
+Semantic Recall
+FAISS (Cosine Similarity)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        │
+        ▼
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SIEVE 2
+Candidate Intelligence Engine
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Career Trajectory Analysis
+• Production ML Detection
+• Search / Recommendation Detection
+• Ranking Experience
+• Product Company Detection
+• Consulting Ratio Analysis
+• Behavioral Signals
+• Honeypot Detection
+• Dynamic JD Matching
+
+        │
+        ▼
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SIEVE 3
+CrossEncoder Precision Reranking
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        │
+        ▼
+Score Fusion
+
+60% CrossEncoder
+
+25% Intelligence Engine
+
+15% Career Trajectory
+
+        │
+        ▼
+Reasoning Generator
+        │
+        ▼
+Top-100 Ranked CSV
 ```
 
 ---
 
-## 🔍 Sieve Detailed Analysis
+# 🔍 Pipeline
 
-### Sieve 1: Semantic Recall
-- **Mechanism:** Uses `all-MiniLM-L6-v2` embeddings and a **FAISS `IndexFlatL2`** vector search.
-- **Rich Text Blocks:** Instead of embedding only skills, CogniHire generates rich representations combining professional summaries, skill inventories, and actual prose from career descriptions.
-- **Purpose:** To identify candidates with the right *conceptual* fit, even if they don't use the exact keywords found in the JD.
+## Sieve 1 – Semantic Recall
 
-### Sieve 2: Intelligence & Trap Filter
-A logic-heavy layer that evaluates candidate authenticity and "persona" fit:
-- **Honeypot Detection:** Identifies "impossible" profiles (e.g., 15 years of experience for a 22-year-old) and "keyword stuffers" (expert in 20+ skills with 0 months of usage).
-- **Persona Analysis:**
-    - **Consulting Penalty:** Hard-penalizes candidates with purely consulting backgrounds.
-    - **Shipper vs. Researcher:** Scans for production signals (*"deployed", "scaled", "shipped"*) vs. purely theoretical signals (*"studied", "explored"*).
-    - **Stability Check:** Detects "Title-Chasers" through tenure-per-company analysis.
-- **Behavioral Multipliers:** Integrates `redrob_signals` (e.g., `open_to_work`, `recruiter_response_rate`, and `notice_period`) to adjust the final confidence score.
+Uses **SentenceTransformer embeddings** together with **FAISS cosine similarity** for fast semantic retrieval.
 
-### Sieve 3: Precision Reranking
-- **Mechanism:** A local **Cross-Encoder** (`ms-marco-MiniLM-L-6-v2`).
-- **Purpose:** Unlike cosine similarity, the Cross-Encoder performs a deep, token-level interaction analysis between the Job Description and the candidate's profile to ensure the final top 100 are absolute fits.
+Each candidate is represented as a rich semantic profile containing:
+
+- Professional Summary
+- Skills
+- Experience
+- Projects
+- Career History
+- Behavioral Metadata
+
+This allows retrieval based on **meaning**, not keyword overlap.
 
 ---
 
-## 🛠 Tech Stack
+## Sieve 2 – Candidate Intelligence
 
-| Component           | Technology            |
-| ------------------- | --------------------- |
-| Language            | Python 3.10+          |
-| Package Manager     | `uv` (Fast/Reproducible)|
-| Embeddings          | `sentence-transformers` |
-| Vector Search       | `faiss-cpu`             |
-| Data Processing     | `pandas`, `numpy`      |
-| Reranking           | `Cross-Encoder`       |
-| UI Sandbox          | `streamlit`           |
+This stage evaluates candidate quality using structured features.
+
+### Career Trajectory Engine
+
+Extracts features such as:
+
+- Production ML Years
+- Ranking System Experience
+- Search / Recommendation Experience
+- NLP Experience
+- Product Company Experience
+- Consulting Ratio
+- Career Stability
+- Leadership Progression
+- Vector Database Usage
+- Evaluation Frameworks
+
+### Behavioral Intelligence
+
+Uses recruiter signals including:
+
+- Open to Work
+- Recruiter Response Rate
+- Notice Period
+- Profile Completeness
+- Interview History
+
+### Production Readiness
+
+Rewards candidates who have shipped real systems instead of only research projects.
 
 ---
 
-## 📂 Project Structure
+## Sieve 3 – Neural Precision
+
+Uses a **CrossEncoder** to perform token-level comparison between the Job Description and candidate profile for high-precision reranking.
+
+---
+
+# 🎯 Final Ranking Score
+
+Rather than relying on a single model, CogniHire combines multiple signals.
+
+```
+Final Score
+
+=
+
+0.60 × CrossEncoder
+
++
+
+0.25 × Candidate Intelligence
+
++
+
+0.15 × Career Trajectory
+```
+
+---
+
+# 🧠 Dynamic JD Understanding
+
+CogniHire automatically extracts structured hiring intent from the uploaded Job Description.
+
+It identifies:
+
+- Required Skills
+- Preferred Skills
+- System Design Requirements
+- Experience Range
+- Production Expectations
+- Behavioral Preferences
+
+Candidates are evaluated against these requirements instead of relying on keyword matching.
+
+---
+
+# 💡 Explainable AI
+
+Every recommendation includes a structured explanation grounded in extracted candidate data.
+
+Example:
+
+> **Excellent Match:** Senior Machine Learning Engineer with 6.8 years of experience. Built production ML systems for 5.2 years with 3.4 years of ranking/search experience. Strong product-company background, hands-on vector database deployment, and high alignment with required JD skills.
+
+No external LLM APIs are used during ranking.
+
+---
+
+# 🛠 Tech Stack
+
+| Component | Technology |
+|------------|------------|
+| Language | Python 3.13 |
+| Package Manager | uv |
+| Embeddings | Sentence Transformers |
+| Vector Search | FAISS CPU |
+| Neural Reranking | CrossEncoder |
+| Data Processing | Pandas |
+| Desktop UI | CustomTkinter |
+| Deployment | Docker |
+
+---
+
+# 📂 Project Structure
 
 ```text
 CogniHire/
-├── data/                   # Dataset (candidates.jsonl)
-├── artifacts/              # Precomputed index & embeddings (git-ignored)
+│
+├── app.py
+├── pyproject.toml
+├── uv.lock
+├── Dockerfile
+│
+├── artifacts/
+│
 ├── src/
-│   ├── config.py           # Central brain (weights, constants, lists)
-│   ├── loader.py           # High-performance JSONL reader
-│   ├── text_builder.py     # Rich text block generator
-│   ├── precompute.py       # Offline embedding & indexing pipeline
-│   ├── sieve_engine.py     # Sieve 1 & 2 implementation
-│   ├── res_gen.py          # Fact-grounded justification engine
-│   ├── ranker.py           # Main orchestrator (The Ranking Step)
-│   └── sandbox.py          # Logic for the Streamlit demo
-├── app.py                  # Streamlit UI
-├── requirements.txt        # Dependencies
-└── .gitignore
+│   ├── config.py
+│   ├── loader.py
+│   ├── pipeline.py
+│   ├── precompute.py
+│   ├── trajectory_engine.py
+│   ├── sieve_engine.py
+│   ├── jd_parser.py
+│   ├── ranker.py
+│   ├── res_gen.py
+│   └── text_builder.py
+│
+└── README.md
 ```
 
 ---
 
-## 🚀 Setup & Reproduction
+# 🚀 Installation
 
-### 1. Installation
+Install **uv**
+
 ```bash
-# Install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Clone the repository
+
+```bash
+git clone https://github.com/GhostisLive/CogniHire.git
+
+cd CogniHire
+```
+
+Install dependencies
+
+```bash
 uv sync
 ```
 
-### 2. Pre-Computation (Offline)
-To meet the 5-minute ranking constraint, embeddings are precomputed.
+---
+
+# 🖥 Desktop Application
+
+Launch the desktop interface
+
 ```bash
-python -m src.precompute
+uv run python app.py
 ```
 
-### 3. Ranking (The Submission Step)
-Generates the final `submission.csv` in under 5 minutes on a CPU.
+The GUI allows users to:
+
+- Upload Candidate JSONL
+- Automatically Generate Embeddings
+- Build a Temporary FAISS Index
+- Execute the Complete Ranking Pipeline
+- Export the Top-100 Ranked CSV
+
+---
+
+# ⚡ Offline Precomputation
+
+For large datasets:
+
 ```bash
-python -m src.ranker --out submission.csv
+uv run python -m src.precompute
 ```
 
-### 4. Sandbox Demo
-Run the interactive dashboard:
-```bash
-streamlit run app.py
+This generates:
+
+```text
+artifacts/
+├── embeddings.npy
+├── faiss.index
+└── jd_embedding.npy
 ```
 
 ---
 
-## 🌐 Sandbox & Explainability
+# 🏆 Ranking
 
-### Fact-Grounded Reasoning
-To avoid LLM hallucinations, CogniHire uses a **Fact-Extraction Engine**. The justifications in the CSV are not "generated" by a prompt, but "assembled" from actual candidate data:
-- **Example:** *"Top-tier fit: Senior ML Engineer with 6.8 years of experience. Strong match based on production experience at Dream11. Key signals: Actively open to work."*
+Generate the final ranked CSV
 
-### The Sandbox Experience
-The Streamlit app provides a real-time demo. To ensure a seamless experience:
-- **On-the-Fly Indexing:** For small samples, the app bypasses disk artifacts and encodes candidates in RAM.
-- **Smart Sampling:** For large uploads, the app samples the top 2,000 candidates to ensure response times remain under 30 seconds.
+```bash
+uv run python -m src.ranker --out submission.csv
+```
 
 ---
 
-## 👥 Team
-**Rwitabrato Hanpal** ([GitHub](https://github.com/GhostisLive)) & **Anushka Ghosh** ([GitHub](https://github.com/Code-0ne))
+# 🐳 Docker
+
+## Pull Image
+
+```bash
+docker pull rwitabrato/cognihire:latest
+```
+
+## Run
+
+```bash
+docker run --rm -p 6080:6080 rwitabrato/cognihire:latest
+```
+
+Open:
+
+```
+http://localhost:6080
+```
+
+The Docker container launches the CogniHire interface where you can:
+
+- Upload Candidate JSONL
+- Run the ranking pipeline
+- Export the ranked CSV
+
+---
+
+# ⚙ Compute Requirements
+
+Designed for CPU-only execution.
+
+- CPU Only
+- Offline Inference
+- ≤16 GB RAM
+- No External APIs
+- Fully Reproducible
+
+---
+
+# 👥 Team
+
+### Rwitabrato Hanpal
+
+GitHub: https://github.com/GhostisLive
+
+### Anushka Ghosh
+
+GitHub: https://github.com/Code-0ne
+
+---
+
+# 📜 License
 
 Developed for the **Redrob Intelligent Candidate Discovery Challenge**.
