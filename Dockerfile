@@ -12,8 +12,8 @@ RUN apt-get update && \
         xvfb \
         x11vnc \
         websockify \
+        fluxbox \
         wget \
-        git \
         ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
@@ -23,10 +23,10 @@ WORKDIR /app
 RUN pip install --no-cache-dir --upgrade pip uv
 
 # Copy dependency files first
-COPY pyproject.toml uv.lock ./
+COPY pyproject.toml uv.lock README.md ./
 
 # Install dependencies
-RUN uv sync --frozen --no-dev
+RUN uv sync --frozen --no-dev --no-install-project
 
 # Copy project
 COPY . .
@@ -44,7 +44,11 @@ RUN printf '%s\n' \
 'export DISPLAY=:0' \
 '' \
 'echo "Starting Xvfb..."' \
-'Xvfb :0 -screen 0 1200x700x24 &' \
+'Xvfb :0 -screen 0 1920x1080x24 &' \
+'sleep 2' \
+'' \
+'echo "Starting Window Manager..."' \
+'fluxbox & ' \
 'sleep 2' \
 '' \
 'echo "Starting x11vnc..."' \
