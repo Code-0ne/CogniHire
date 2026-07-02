@@ -1,501 +1,501 @@
 candidate_id,rank,score,reasoning
-CAND_0073007,1,0.8012762497257483,"Excellent Match 
-Strengths: 5.75y building production ML systems | 4.17y developing ranking systems | 4.17y in search and retrieval | product experience at Aganitha
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Excellent alignment across technical and production requirements."
-CAND_0055992,2,0.7634003774118875,"Excellent Match 
-Strengths: 6.67y building production ML systems | 4.08y developing ranking systems | 5.33y in search and retrieval | hands-on experience with 3 vector database technologies | product experience at CRED
+CAND_0061175,1,0.7987182017688872,"Excellent Match 
+Strengths: 6.67y building production ML systems | 4.0y developing ranking systems | 4.0y in search and retrieval | product experience at Haptik
+Alignment: matched 6 required skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Recommended for immediate recruiter review."
+CAND_0046525,2,0.7938515480189097,"Excellent Match 
+Strengths: 2.08y developing ranking systems | 6.08y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Genpact AI
 Alignment: matched 9 required skills | within target experience range
 Considerations: no critical gaps
- Highly aligned with the uploaded JD."
-CAND_0055905,3,0.7618260059080707,"Excellent Match 
-Strengths: 8.0y building production ML systems | 6.83y developing ranking systems | 4.92y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Flipkart
-Alignment: matched 7 required skills | matched 2 preferred skills | within target experience range
-Considerations: no critical gaps
- Strong overall fit with minimal trade-offs."
-CAND_0046924,4,0.7293552505238645,"Excellent Match 
-Strengths: 6.17y building production ML systems | 4.17y developing ranking systems | 4.17y in search and retrieval | product experience at PharmEasy
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Excellent alignment across technical and production requirements."
-CAND_0069771,5,0.7227481778110911,"Excellent Match 
-Strengths: 5.67y building production ML systems | 3.67y developing ranking systems | 3.67y in search and retrieval | product experience at Sarvam AI
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Strong overall fit with minimal trade-offs."
-CAND_0066798,6,0.7199835022797771,"Excellent Match 
-Strengths: 5.08y building production ML systems | 4.5y developing ranking systems | 4.5y in search and retrieval | product experience at Zoho
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
  Recommended for immediate recruiter review."
-CAND_0097896,7,0.712336306126674,"Excellent Match 
-Strengths: 4.67y building production ML systems | 3.33y developing ranking systems | 3.33y in search and retrieval | product experience at upGrad
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.7y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Recommended for immediate recruiter review."
-CAND_0039308,8,0.7100820110356231,"Excellent Match 
-Strengths: 5.5y building production ML systems | 3.17y developing ranking systems | 3.17y in search and retrieval | product experience at BYJU'S
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Recommended for immediate recruiter review."
-CAND_0066309,9,0.7067506090466418,"Excellent Match 
-Strengths: 5.25y building production ML systems | 1.5y developing ranking systems | 1.5y in search and retrieval | product experience at PharmEasy
-Alignment: matched 3 required skills | within target experience range
-Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Strong overall fit with minimal trade-offs."
-CAND_0050454,10,0.6997493613564658,"Excellent Match 
-Strengths: 6.75y building production ML systems | 1.67y developing ranking systems | 6.75y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Rephrase.ai
-Alignment: matched 6 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Highly aligned with the uploaded JD."
-CAND_0043860,11,0.6947175638234616,"Strong Match 
-Strengths: 6.08y building production ML systems | 4.0y developing ranking systems | 4.0y in search and retrieval | product experience at Aganitha
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Strong technical fit with a few manageable gaps."
-CAND_0001218,12,0.6940331013462732,"Strong Match 
-Strengths: 6.25y building production ML systems | 4.42y developing ranking systems | 4.42y in search and retrieval | product experience at Nykaa
-Alignment: matched 3 required skills | within target experience range
-Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Strong technical fit with a few manageable gaps."
-CAND_0035315,13,0.6934975705169257,"Strong Match 
-Strengths: 4.83y building production ML systems | 4.08y developing ranking systems | 4.08y in search and retrieval | product experience at Zoho
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.8y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Worth progressing to technical interviews."
-CAND_0046526,14,0.6930581822356632,"Strong Match 
-Strengths: 5.42y building production ML systems | 3.58y developing ranking systems | 3.58y in search and retrieval | product experience at Ola
-Alignment: matched 3 required skills | within target experience range
-Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Recommended for further evaluation."
-CAND_0009516,15,0.6842785455380697,"Strong Match 
-Strengths: 6.83y building production ML systems | 2.75y developing ranking systems | 2.75y in search and retrieval | product experience at Verloop.io
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Worth progressing to technical interviews."
-CAND_0061156,16,0.6799351728936917,"Strong Match 
-Strengths: 5.92y building production ML systems | 3.75y developing ranking systems | 3.75y in search and retrieval | product experience at Sarvam AI
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Strong technical fit with a few manageable gaps."
-CAND_0024147,17,0.6778497180935746,"Strong Match 
-Strengths: 5.83y building production ML systems | 3.33y developing ranking systems | 3.33y in search and retrieval | product experience at Ola
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Strong technical fit with a few manageable gaps."
-CAND_0054829,18,0.677077502908284,"Strong Match 
-Strengths: 5.58y building production ML systems | 1.83y developing ranking systems | 1.83y in search and retrieval | product experience at BYJU'S
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Strong overall fit with only minor trade-offs."
-CAND_0056262,19,0.6730832664564236,"Strong Match 
-Strengths: 5.92y building production ML systems | 4.42y developing ranking systems | 4.42y in search and retrieval | product experience at Swiggy
-Alignment: matched 3 required skills | within target experience range
-Considerations: extended notice period (90d) | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
- Worth progressing to technical interviews."
-CAND_0072784,20,0.654588493308453,"Strong Match 
-Strengths: 3.33y building production ML systems | product experience at Zoho
-Alignment: matched 2 required skills
-Considerations: slightly below preferred experience range (3.3y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Recommended for further evaluation."
-CAND_0022852,21,0.6509493741732252,"Strong Match 
-Strengths: 5.33y building production ML systems | 1.58y developing ranking systems | 1.58y in search and retrieval | product experience at Zomato
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Recommended for further evaluation."
-CAND_0060054,22,0.6494239821538133,"Strong Match 
-Strengths: 6.33y building production ML systems | 3.75y developing ranking systems | 4.58y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Mad Street Den
-Alignment: matched 8 required skills | within target experience range
-Considerations: no critical gaps
- Strong technical fit with a few manageable gaps."
-CAND_0049978,23,0.6476092810229245,"Strong Match 
-Strengths: 6.5y building production ML systems | 4.33y developing ranking systems | 4.33y in search and retrieval | product experience at Sarvam AI
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Recommended for further evaluation."
-CAND_0058412,24,0.6406699145985195,"Strong Match 
-Strengths: 6.5y building production ML systems | 4.17y developing ranking systems | 4.17y in search and retrieval | product experience at InMobi
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Strong overall fit with only minor trade-offs."
-CAND_0082913,25,0.6386205892078024,"Strong Match 
-Strengths: 5.42y building production ML systems | 5.42y developing ranking systems | 5.42y in search and retrieval | product experience at InMobi
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Strong technical fit with a few manageable gaps."
-CAND_0079176,26,0.63307976332452,"Strong Match 
-Strengths: 5.25y building production ML systems | 2.17y developing ranking systems | 2.17y in search and retrieval | product experience at Haptik
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Worth progressing to technical interviews."
-CAND_0097472,27,0.631423239417554,"Strong Match 
-Strengths: 5.75y building production ML systems | 1.25y developing ranking systems | 1.25y in search and retrieval | product experience at Flipkart
-Alignment: matched 3 required skills | within target experience range
-Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Strong overall fit with only minor trade-offs."
-CAND_0019845,28,0.626405931522997,"Strong Match 
-Strengths: 3.33y building production ML systems | 2.08y developing ranking systems | 2.08y in search and retrieval | product experience at Zomato
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.3y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- Strong overall fit with only minor trade-offs."
-CAND_0061175,29,0.6244716316620557,"Strong Match 
-Strengths: 6.67y building production ML systems | 4.0y developing ranking systems | 4.0y in search and retrieval | product experience at Haptik
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Worth progressing to technical interviews."
-CAND_0055139,30,0.6193081690565627,"Strong Match 
-Strengths: 6.75y building production ML systems | 3.5y developing ranking systems | 3.5y in search and retrieval | product experience at HCL
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
- Strong overall fit with only minor trade-offs."
-CAND_0051486,31,0.6189010416401187,"Good Match 
-Strengths: 5.83y building production ML systems | 5.83y developing ranking systems | 5.83y in search and retrieval | product experience at Aganitha
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Suitable depending on team priorities."
-CAND_0008628,32,0.6186558779356653,"Good Match 
-Strengths: 3.17y building production ML systems | 2.5y developing ranking systems | 2.5y in search and retrieval | product experience at Ola
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.2y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- Suitable depending on team priorities."
-CAND_0046525,33,0.6150025735170062,"Good Match 
-Strengths: 2.08y developing ranking systems | 6.08y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Genpact AI
-Alignment: matched 7 required skills | within target experience range
-Considerations: no critical gaps
- Some gaps exist but the overall profile remains relevant."
-CAND_0074123,34,0.6146884096926069,"Good Match 
-Strengths: 6.83y building production ML systems | 2.58y developing ranking systems | 2.58y in search and retrieval | product experience at CRED
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Some gaps exist but the overall profile remains relevant."
-CAND_0085557,35,0.6095881021202518,"Good Match 
+CAND_0085557,3,0.7904623598160079,"Excellent Match 
 Strengths: 3.08y building production ML systems | 3.08y developing ranking systems | 3.08y in search and retrieval | product experience at Rephrase.ai
-Alignment: matched 3 required skills
+Alignment: matched 5 required skills
 Considerations: slightly below preferred experience range (3.1y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Good alignment with the core requirements."
-CAND_0076251,36,0.6081139049606994,"Good Match 
-Strengths: 7.58y building production ML systems | 2.5y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Haptik
-Alignment: matched 5 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Reasonable fit for the target role."
-CAND_0098952,37,0.603290682898838,"Good Match 
+ Strong overall fit with minimal trade-offs."
+CAND_0098952,4,0.7826048793228607,"Excellent Match 
 Strengths: 5.42y building production ML systems | 3.58y developing ranking systems | 3.58y in search and retrieval | product experience at CRED
-Alignment: matched 3 required skills | within target experience range
+Alignment: matched 6 required skills | matched 2 preferred skills | within target experience range
 Considerations: no mention of eval metrics (NDCG/MAP)
- Some gaps exist but the overall profile remains relevant."
-CAND_0004848,38,0.6021628348371281,"Good Match 
-Strengths: 5.58y building production ML systems | product experience at Freshworks
-Alignment: matched 2 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Reasonable fit for the target role."
-CAND_0069718,39,0.5962032090692061,"Good Match 
-Strengths: 5.58y building production ML systems | product experience at Saarthi.ai
-Alignment: matched 2 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Reasonable fit for the target role."
-CAND_0065139,40,0.5921688695532378,"Good Match 
-Strengths: 5.08y building production ML systems | product experience at Niramai
-Alignment: matched 2 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Reasonable fit for the target role."
-CAND_0013988,41,0.5902385318794878,"Good Match 
-Strengths: 5.33y building production ML systems | 1.0y developing ranking systems | 1.0y in search and retrieval | product experience at Ola
-Alignment: matched 3 required skills | within target experience range
-Considerations: extended notice period (90d) | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
- Some gaps exist but the overall profile remains relevant."
-CAND_0033179,42,0.5861780447390906,"Good Match 
-Strengths: 6.83y building production ML systems | 3.17y developing ranking systems | 3.17y in search and retrieval | product experience at Wipro
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Suitable depending on team priorities."
-CAND_0005269,43,0.5846269860155913,"Good Match 
-Strengths: 6.0y building production ML systems | product experience at Sarvam AI
-Alignment: matched 2 required skills | within target experience range
-Considerations: below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
- Reasonable fit for the target role."
-CAND_0046313,44,0.5839421600860477,"Good Match 
-Strengths: 5.75y building production ML systems | product experience at Flipkart
-Alignment: matched 2 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Suitable depending on team priorities."
-CAND_0082086,45,0.5824909653509749,"Good Match 
-Strengths: 5.92y building production ML systems | product experience at Razorpay
-Alignment: matched 2 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Suitable depending on team priorities."
-CAND_0001930,46,0.5815196493509329,"Good Match 
-Strengths: 6.75y building production ML systems | 5.5y developing ranking systems | 5.5y in search and retrieval | product experience at Dream11
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Suitable depending on team priorities."
-CAND_0072232,47,0.5802833558467396,"Good Match 
-Strengths: 3.92y building production ML systems | 3.92y developing ranking systems | 3.92y in search and retrieval | product experience at Yellow.ai
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.9y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Good alignment with the core requirements."
-CAND_0048166,48,0.5790530748740856,"Good Match 
-Strengths: 5.08y building production ML systems | 4.0y developing ranking systems | 4.0y in search and retrieval | product experience at Aganitha
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Some gaps exist but the overall profile remains relevant."
-CAND_0093401,49,0.5751982727112908,"Good Match 
-Strengths: 5.83y building production ML systems | product experience at Haptik
-Alignment: matched 2 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Reasonable fit for the target role."
-CAND_0069638,50,0.5668397917465273,"Good Match 
-Strengths: 6.08y building production ML systems | 5.25y developing ranking systems | 5.25y in search and retrieval | product experience at Swiggy
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Some gaps exist but the overall profile remains relevant."
-CAND_0008425,51,0.5624948755230796,"Good Match 
-Strengths: 7.67y building production ML systems | 5.58y developing ranking systems | 3.83y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Ola
-Alignment: matched 5 required skills | matched 2 preferred skills | within target experience range
-Considerations: extended notice period (90d)
- Some gaps exist but the overall profile remains relevant."
-CAND_0000981,52,0.5543218111449832,"Good Match 
-Strengths: 6.33y building production ML systems | 3.5y developing ranking systems | 3.5y in search and retrieval | product experience at Wysa
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Good alignment with the core requirements."
-CAND_0026362,53,0.5535289918407215,"Good Match 
-Strengths: 4.92y building production ML systems | 3.83y developing ranking systems | 3.83y in search and retrieval | product experience at PhonePe
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.9y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- Some gaps exist but the overall profile remains relevant."
-CAND_0094759,54,0.5528901736664648,"Good Match 
-Strengths: 2.33y developing ranking systems | 8.42y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Meta
-Alignment: matched 7 required skills | within target experience range
-Considerations: very limited recruiter engagement
- Good alignment with the core requirements."
-CAND_0012888,55,0.5502341787192753,"Good Match 
-Strengths: 6.33y building production ML systems | 2.83y developing ranking systems | 2.83y in search and retrieval | product experience at Genpact AI
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Good alignment with the core requirements."
-CAND_0067322,56,0.5462276473048749,"Good Match 
-Strengths: 4.25y building production ML systems | 2.5y developing ranking systems | 2.5y in search and retrieval | product experience at Nykaa
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.2y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Good alignment with the core requirements."
-CAND_0043637,57,0.543810206684998,"Good Match 
-Strengths: 5.42y building production ML systems | product experience at Rephrase.ai
-Alignment: matched 2 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Good alignment with the core requirements."
-CAND_0067403,58,0.537792204640784,"Good Match 
-Strengths: 4.5y building production ML systems | 3.67y developing ranking systems | 3.67y in search and retrieval | product experience at Unacademy
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.5y vs 5-9y) | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
- Good alignment with the core requirements."
-CAND_0054271,59,0.5356807142493766,"Good Match 
-Strengths: 5.75y building production ML systems | product experience at Verloop.io
-Alignment: matched 2 required skills | within target experience range
-Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Suitable depending on team priorities."
-CAND_0074325,60,0.5342754974907891,"Good Match 
-Strengths: 3.83y building production ML systems | 1.83y developing ranking systems | 1.83y in search and retrieval | product experience at Haptik
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.8y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- Reasonable fit for the target role."
-CAND_0076995,61,0.5324136631169927,"Potential Match 
-Strengths: 4.33y building production ML systems | 3.75y developing ranking systems | 3.75y in search and retrieval | product experience at Haptik
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.3y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
-CAND_0037000,62,0.531861630793177,"Potential Match 
-Strengths: 6.25y building production ML systems | 4.67y developing ranking systems | 0.67y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Unacademy
-Alignment: matched 5 required skills | within target experience range
+ Highly aligned with the uploaded JD."
+CAND_0055992,5,0.7634003774118875,"Excellent Match 
+Strengths: 6.67y building production ML systems | 4.08y developing ranking systems | 5.33y in search and retrieval | hands-on experience with 3 vector database technologies | product experience at CRED
+Alignment: matched 11 required skills | within target experience range
 Considerations: no critical gaps
- Would benefit from deeper technical evaluation."
-CAND_0014909,63,0.5315732335816244,"Potential Match 
+ Highly aligned with the uploaded JD."
+CAND_0048166,6,0.757450053460592,"Excellent Match 
+Strengths: 5.08y building production ML systems | 4.0y developing ranking systems | 4.0y in search and retrieval | product experience at Aganitha
+Alignment: matched 7 required skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Excellent alignment across technical and production requirements."
+CAND_0069638,7,0.742555422852559,"Excellent Match 
+Strengths: 6.08y building production ML systems | 5.25y developing ranking systems | 5.25y in search and retrieval | product experience at Swiggy
+Alignment: matched 5 required skills | matched 1 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Highly aligned with the uploaded JD."
+CAND_0008425,8,0.7419843475781294,"Excellent Match 
+Strengths: 7.67y building production ML systems | 5.58y developing ranking systems | 3.83y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Ola
+Alignment: matched 8 required skills | matched 2 preferred skills | within target experience range
+Considerations: extended notice period (90d)
+ Highly aligned with the uploaded JD."
+CAND_0000981,9,0.7310779246676473,"Excellent Match 
+Strengths: 6.33y building production ML systems | 3.5y developing ranking systems | 3.5y in search and retrieval | product experience at Wysa
+Alignment: matched 6 required skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Recommended for immediate recruiter review."
+CAND_0094759,10,0.7302436919624553,"Excellent Match 
+Strengths: 2.33y developing ranking systems | 8.42y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Meta
+Alignment: matched 10 required skills | within target experience range
+Considerations: very limited recruiter engagement
+ Recommended for immediate recruiter review."
+CAND_0026362,11,0.7290003067238484,"Strong Match 
+Strengths: 4.92y building production ML systems | 3.83y developing ranking systems | 3.83y in search and retrieval | product experience at PhonePe
+Alignment: matched 5 required skills
+Considerations: slightly below preferred experience range (4.9y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Strong technical fit with a few manageable gaps."
+CAND_0067322,12,0.722172315101643,"Strong Match 
+Strengths: 4.25y building production ML systems | 2.5y developing ranking systems | 2.5y in search and retrieval | product experience at Nykaa
+Alignment: matched 7 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.2y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Recommended for further evaluation."
+CAND_0097896,13,0.7205962220766596,"Strong Match 
+Strengths: 4.67y building production ML systems | 3.33y developing ranking systems | 3.33y in search and retrieval | product experience at upGrad
+Alignment: matched 5 required skills
+Considerations: slightly below preferred experience range (4.7y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Worth progressing to technical interviews."
+CAND_0039308,14,0.7100820110356231,"Strong Match 
+Strengths: 5.5y building production ML systems | 3.17y developing ranking systems | 3.17y in search and retrieval | product experience at BYJU'S
+Alignment: matched 4 required skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Strong overall fit with only minor trade-offs."
+CAND_0037000,15,0.7099023989193127,"Strong Match 
+Strengths: 6.25y building production ML systems | 4.67y developing ranking systems | 0.67y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Unacademy
+Alignment: matched 7 required skills | within target experience range
+Considerations: no critical gaps
+ Recommended for further evaluation."
+CAND_0066309,16,0.7095345728224524,"Strong Match 
+Strengths: 5.25y building production ML systems | 1.5y developing ranking systems | 1.5y in search and retrieval | product experience at PharmEasy
+Alignment: matched 5 required skills | within target experience range
+Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Strong technical fit with a few manageable gaps."
+CAND_0014909,17,0.7082544930878479,"Strong Match 
 Strengths: 4.75y building production ML systems | 3.58y developing ranking systems | 3.58y in search and retrieval | product experience at Niramai
 Alignment: matched 3 required skills
 Considerations: slightly below preferred experience range (4.8y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
-CAND_0044222,64,0.5306751834304565,"Potential Match 
-Strengths: 7.67y building production ML systems | 3.58y developing ranking systems | 4.08y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at PolicyBazaar
-Alignment: matched 6 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Several gaps should be validated during screening."
-CAND_0041568,65,0.5276428556495458,"Potential Match 
-Strengths: 5.08y building production ML systems | 3.92y developing ranking systems | 3.92y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Haptik
-Alignment: matched 7 required skills | within target experience range
-Considerations: extended notice period (90d)
- Would benefit from deeper technical evaluation."
-CAND_0051310,66,0.5267897047890683,"Potential Match 
-Strengths: 3.5y building production ML systems | product experience at Haptik
-Alignment: matched 2 required skills
-Considerations: slightly below preferred experience range (3.5y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0009236,67,0.5230167662926125,"Potential Match 
-Strengths: 6.25y building production ML systems | 6.25y developing ranking systems | 6.25y in search and retrieval | product experience at Vedantu
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Several gaps should be validated during screening."
-CAND_0000273,68,0.5222242462025414,"Potential Match 
+ Worth progressing to technical interviews."
+CAND_0000273,18,0.7003827185144603,"Strong Match 
 Strengths: 5.75y building production ML systems | 2.67y developing ranking systems | 2.67y in search and retrieval | product experience at BYJU'S
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
-CAND_0044262,69,0.5220140623633093,"Potential Match 
-Strengths: 6.75y building production ML systems | 3.0y developing ranking systems | 3.0y in search and retrieval | product experience at upGrad
-Alignment: matched 3 required skills | within target experience range
-Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Additional recruiter review is recommended."
-CAND_0025046,70,0.5132699238974961,"Potential Match 
-Strengths: 6.58y building production ML systems | product experience at Genpact AI
-Alignment: matched 2 required skills | within target experience range
-Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Several gaps should be validated during screening."
-CAND_0077552,71,0.5130371305004592,"Potential Match 
-Strengths: 3.33y building production ML systems | 3.33y developing ranking systems | 3.33y in search and retrieval
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.3y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
-CAND_0070485,72,0.5123271677285132,"Potential Match 
-Strengths: 6.33y building production ML systems | 4.17y developing ranking systems | 6.33y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Saarthi.ai
-Alignment: matched 6 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
-CAND_0016170,73,0.5106368448030187,"Potential Match 
-Strengths: 6.75y building production ML systems | 3.67y developing ranking systems | 3.67y in search and retrieval | product experience at Dream11
-Alignment: matched 3 required skills | within target experience range
-Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Additional recruiter review is recommended."
-CAND_0004402,74,0.5098668320188073,"Potential Match 
-Strengths: 5.92y building production ML systems | 2.67y developing ranking systems | 2.67y in search and retrieval | product experience at Yellow.ai
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Several gaps should be validated during screening."
-CAND_0030348,75,0.509342179059464,"Potential Match 
-Strengths: 4.42y building production ML systems | 2.08y developing ranking systems | 4.42y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at BYJU'S
-Alignment: matched 8 required skills
-Considerations: slightly below preferred experience range (4.4y vs 5-9y)
- May suit adjacent roles better."
-CAND_0058152,76,0.5092486243381232,"Potential Match 
-Strengths: 3.58y building production ML systems | 1.5y developing ranking systems | 1.5y in search and retrieval | product experience at Flipkart
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.6y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
-CAND_0073620,77,0.5090398698468654,"Potential Match 
-Strengths: 4.33y building production ML systems | 3.08y developing ranking systems | 3.08y in search and retrieval | product experience at TCS
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.3y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0013122,78,0.50881208455961,"Potential Match 
-Strengths: 4.25y building production ML systems | 1.58y developing ranking systems | 1.58y in search and retrieval | product experience at Unacademy
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.2y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0096104,79,0.5077232043961153,"Potential Match 
-Strengths: 6.92y building production ML systems | 3.83y developing ranking systems | 3.83y in search and retrieval | product experience at Yellow.ai
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Several gaps should be validated during screening."
-CAND_0016267,80,0.49551385347378196,"Potential Match 
-Strengths: 3.58y building production ML systems | 3.58y developing ranking systems | 3.58y in search and retrieval | product experience at Freshworks
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.6y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0064331,81,0.4948547498976775,"Potential Match 
-Strengths: 4.08y building production ML systems | 1.33y developing ranking systems | 1.33y in search and retrieval | product experience at Swiggy
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.1y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- Several gaps should be validated during screening."
-CAND_0045613,82,0.49239228368921273,"Potential Match 
-Strengths: 4.92y building production ML systems | 2.83y developing ranking systems | 2.83y in search and retrieval | product experience at Saarthi.ai
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.9y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0099269,83,0.48515640407753796,"Potential Match 
-Strengths: 5.42y building production ML systems | 2.08y developing ranking systems | 2.08y in search and retrieval | product experience at BYJU'S
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0023215,84,0.48511692631377107,"Potential Match 
-Strengths: 4.33y building production ML systems | 2.33y developing ranking systems | 2.33y in search and retrieval | product experience at Verloop.io
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.3y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0021827,85,0.48404455144680403,"Potential Match 
-Strengths: 4.33y building production ML systems | 1.25y developing ranking systems | 1.25y in search and retrieval | product experience at Unacademy
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.3y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
-CAND_0087766,86,0.4837141083524546,"Potential Match 
-Strengths: 5.0y building production ML systems | 2.58y developing ranking systems | 2.58y in search and retrieval | product experience at Flipkart
-Alignment: matched 3 required skills | within target experience range
-Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0026410,87,0.4812867999111805,"Potential Match 
-Strengths: 3.17y building production ML systems | 2.58y developing ranking systems | 2.58y in search and retrieval | product experience at Aganitha
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.2y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0020845,88,0.48034855587692066,"Potential Match 
-Strengths: 6.92y building production ML systems | product experience at Swiggy
-Alignment: matched 2 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Several gaps should be validated during screening."
-CAND_0047521,89,0.4801879379027802,"Potential Match 
-Strengths: 4.25y building production ML systems | 2.58y developing ranking systems | 2.58y in search and retrieval | product experience at HCL
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.2y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
-CAND_0046278,90,0.47524226909183526,"Potential Match 
-Strengths: 4.5y building production ML systems | 3.75y developing ranking systems | 3.75y in search and retrieval | product experience at Dream11
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (4.5y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- Additional recruiter review is recommended."
-CAND_0025335,91,0.4735200558463578,"Potential Match 
-Strengths: 6.5y building production ML systems | product experience at PolicyBazaar
-Alignment: matched 2 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Would benefit from deeper technical evaluation."
-CAND_0028908,92,0.47314064641221054,"Potential Match 
-Strengths: 3.08y building production ML systems | 3.08y developing ranking systems | 3.08y in search and retrieval | product experience at Sarvam AI
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.1y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
- Several gaps should be validated during screening."
-CAND_0089829,93,0.4720011445362394,"Potential Match 
-Strengths: 4.17y building production ML systems | product experience at Swiggy
-Alignment: matched 2 required skills
-Considerations: slightly below preferred experience range (4.2y vs 5-9y) | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
- Several gaps should be validated during screening."
-CAND_0065195,94,0.4713410335333875,"Potential Match 
-Strengths: 5.08y building production ML systems | hands-on experience with 1 vector database technologies | product experience at CRED
 Alignment: matched 4 required skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Strong overall fit with only minor trade-offs."
+CAND_0035315,19,0.6934975705169257,"Strong Match 
+Strengths: 4.83y building production ML systems | 4.08y developing ranking systems | 4.08y in search and retrieval | product experience at Zoho
+Alignment: matched 6 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.8y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Strong technical fit with a few manageable gaps."
+CAND_0070485,20,0.688968277665175,"Strong Match 
+Strengths: 6.33y building production ML systems | 4.17y developing ranking systems | 6.33y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Saarthi.ai
+Alignment: matched 6 required skills | matched 3 preferred skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Strong technical fit with a few manageable gaps."
+CAND_0030348,21,0.6874963569124639,"Strong Match 
+Strengths: 4.42y building production ML systems | 2.08y developing ranking systems | 4.42y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at BYJU'S
+Alignment: matched 9 required skills
+Considerations: slightly below preferred experience range (4.4y vs 5-9y)
+ Recommended for further evaluation."
+CAND_0016170,22,0.6852193822994872,"Strong Match 
+Strengths: 6.75y building production ML systems | 3.67y developing ranking systems | 3.67y in search and retrieval | product experience at Dream11
+Alignment: matched 4 required skills | within target experience range
+Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Strong overall fit with only minor trade-offs."
+CAND_0009516,23,0.6842785455380697,"Strong Match 
+Strengths: 6.83y building production ML systems | 2.75y developing ranking systems | 2.75y in search and retrieval | product experience at Verloop.io
+Alignment: matched 4 required skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Recommended for further evaluation."
+CAND_0024147,24,0.6778497180935746,"Strong Match 
+Strengths: 5.83y building production ML systems | 3.33y developing ranking systems | 3.33y in search and retrieval | product experience at Ola
+Alignment: matched 6 required skills | matched 2 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Recommended for further evaluation."
+CAND_0054829,25,0.677077502908284,"Strong Match 
+Strengths: 5.58y building production ML systems | 1.83y developing ranking systems | 1.83y in search and retrieval | product experience at BYJU'S
+Alignment: matched 4 required skills | matched 2 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Worth progressing to technical interviews."
+CAND_0056262,26,0.6730832664564236,"Strong Match 
+Strengths: 5.92y building production ML systems | 4.42y developing ranking systems | 4.42y in search and retrieval | product experience at Swiggy
+Alignment: matched 5 required skills | matched 2 preferred skills | within target experience range
+Considerations: extended notice period (90d) | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
+ Worth progressing to technical interviews."
+CAND_0099269,27,0.6616983685489031,"Strong Match 
+Strengths: 5.42y building production ML systems | 2.08y developing ranking systems | 2.08y in search and retrieval | product experience at BYJU'S
+Alignment: matched 5 required skills | matched 1 preferred skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Worth progressing to technical interviews."
+CAND_0047521,28,0.6582894009621086,"Strong Match 
+Strengths: 4.25y building production ML systems | 2.58y developing ranking systems | 2.58y in search and retrieval | product experience at HCL
+Alignment: matched 6 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.2y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Worth progressing to technical interviews."
+CAND_0046278,29,0.65121893030887,"Strong Match 
+Strengths: 4.5y building production ML systems | 3.75y developing ranking systems | 3.75y in search and retrieval | product experience at Dream11
+Alignment: matched 4 required skills
+Considerations: slightly below preferred experience range (4.5y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Strong overall fit with only minor trade-offs."
+CAND_0064331,30,0.6498482397153873,"Strong Match 
+Strengths: 4.08y building production ML systems | 1.33y developing ranking systems | 1.33y in search and retrieval | product experience at Swiggy
+Alignment: matched 4 required skills
+Considerations: slightly below preferred experience range (4.1y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Worth progressing to technical interviews."
+CAND_0084681,31,0.6495334783603202,"Good Match 
+Strengths: 3.42y building production ML systems | 1.58y developing ranking systems | 1.58y in search and retrieval | product experience at Zomato
+Alignment: matched 3 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (3.4y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Good alignment with the core requirements."
+CAND_0060054,32,0.6494239821538133,"Good Match 
+Strengths: 6.33y building production ML systems | 3.75y developing ranking systems | 4.58y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Mad Street Den
+Alignment: matched 9 required skills | within target experience range
+Considerations: no critical gaps
+ Suitable depending on team priorities."
+CAND_0049978,33,0.6476092810229245,"Good Match 
+Strengths: 6.5y building production ML systems | 4.33y developing ranking systems | 4.33y in search and retrieval | product experience at Sarvam AI
+Alignment: matched 6 required skills | matched 1 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Good alignment with the core requirements."
+CAND_0015967,34,0.6445509247855501,"Good Match 
+Strengths: 5.33y building production ML systems | 3.5y developing ranking systems | 3.5y in search and retrieval | product experience at Razorpay
+Alignment: matched 6 required skills | matched 2 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Reasonable fit for the target role."
+CAND_0026410,35,0.6436288716133831,"Good Match 
+Strengths: 3.17y building production ML systems | 2.58y developing ranking systems | 2.58y in search and retrieval | product experience at Aganitha
+Alignment: matched 5 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (3.2y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0008628,36,0.6425838382069328,"Good Match 
+Strengths: 3.17y building production ML systems | 2.5y developing ranking systems | 2.5y in search and retrieval | product experience at Ola
+Alignment: matched 7 required skills
+Considerations: slightly below preferred experience range (3.2y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Some gaps exist but the overall profile remains relevant."
+CAND_0066035,37,0.642353670803143,"Good Match 
+Strengths: 6.58y building production ML systems | 2.25y developing ranking systems | 2.25y in search and retrieval | product experience at Razorpay
+Alignment: matched 4 required skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0067866,38,0.6366173735271794,"Good Match 
+Strengths: 6.33y building production ML systems | 3.17y developing ranking systems | 3.17y in search and retrieval | product experience at Tech Mahindra
+Alignment: matched 6 required skills | matched 2 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Some gaps exist but the overall profile remains relevant."
+CAND_0052498,39,0.6355877123485221,"Good Match 
+Strengths: 4.67y building production ML systems | 1.67y developing ranking systems | 1.67y in search and retrieval | product experience at Wysa
+Alignment: matched 4 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (4.7y vs 5-9y) | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0003977,40,0.6351366362131309,"Good Match 
+Strengths: 4.58y building production ML systems | 4.58y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Google
+Alignment: matched 7 required skills
+Considerations: slightly below preferred experience range (4.6y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0002037,41,0.6317823539434892,"Good Match 
+Strengths: 5.42y building production ML systems | 2.83y developing ranking systems | 2.83y in search and retrieval | product experience at Locobuzz
+Alignment: matched 6 required skills | matched 1 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0048469,42,0.6297793967191782,"Good Match 
+Strengths: 4.67y building production ML systems | 3.0y developing ranking systems | 3.0y in search and retrieval | product experience at Vedantu
+Alignment: matched 6 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.7y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0049538,43,0.6266919496067592,"Good Match 
+Strengths: 5.67y building production ML systems | 3.33y developing ranking systems | 3.33y in search and retrieval | product experience at Saarthi.ai
+Alignment: matched 7 required skills | matched 2 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Good alignment with the core requirements."
+CAND_0019845,44,0.626405931522997,"Good Match 
+Strengths: 3.33y building production ML systems | 2.08y developing ranking systems | 2.08y in search and retrieval | product experience at Zomato
+Alignment: matched 4 required skills
+Considerations: slightly below preferred experience range (3.3y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Some gaps exist but the overall profile remains relevant."
+CAND_0028908,45,0.6222271713375521,"Good Match 
+Strengths: 3.08y building production ML systems | 3.08y developing ranking systems | 3.08y in search and retrieval | product experience at Sarvam AI
+Alignment: matched 5 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (3.1y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Good alignment with the core requirements."
+CAND_0079830,46,0.6195504222779502,"Good Match 
+Strengths: 3.58y building production ML systems | 3.58y developing ranking systems | 3.58y in search and retrieval | product experience at BYJU'S
+Alignment: matched 5 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (3.6y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0055139,47,0.6193081690565627,"Good Match 
+Strengths: 6.75y building production ML systems | 3.5y developing ranking systems | 3.5y in search and retrieval | product experience at HCL
+Alignment: matched 5 required skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
+ Reasonable fit for the target role."
+CAND_0089552,48,0.6185321077123245,"Good Match 
+Strengths: 5.92y building production ML systems | 1.75y developing ranking systems | 1.75y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Netflix
+Alignment: matched 10 required skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring
+ Reasonable fit for the target role."
+CAND_0020708,49,0.6181422167561617,"Good Match 
+Strengths: 4.17y building production ML systems | 4.17y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at PolicyBazaar
+Alignment: matched 7 required skills
+Considerations: slightly below preferred experience range (4.2y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Reasonable fit for the target role."
+CAND_0046108,50,0.6125354654586184,"Good Match 
+Strengths: 3.58y building production ML systems | 2.0y developing ranking systems | 2.0y in search and retrieval | product experience at CRED
+Alignment: matched 5 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (3.6y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Reasonable fit for the target role."
+CAND_0042506,51,0.6118000912184152,"Good Match 
+Strengths: 4.17y building production ML systems | 2.67y developing ranking systems | 2.67y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Verloop.io
+Alignment: matched 10 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.2y vs 5-9y)
+ Good alignment with the core requirements."
+CAND_0002426,52,0.5920825594864969,"Good Match 
+Strengths: 3.25y building production ML systems | 3.25y developing ranking systems | 3.25y in search and retrieval | product experience at Freshworks
+Alignment: matched 6 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (3.2y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Some gaps exist but the overall profile remains relevant."
+CAND_0029367,53,0.5900800091474397,"Good Match 
+Strengths: 5.58y building production ML systems | 4.92y in search and retrieval | hands-on experience with 3 vector database technologies | product experience at Rephrase.ai
+Alignment: matched 8 required skills | matched 2 preferred skills | within target experience range
+Considerations: extended notice period (90d)
+ Suitable depending on team priorities."
+CAND_0001930,54,0.5815196493509329,"Good Match 
+Strengths: 6.75y building production ML systems | 5.5y developing ranking systems | 5.5y in search and retrieval | product experience at Dream11
+Alignment: matched 5 required skills | matched 2 preferred skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0045862,55,0.5803900085460254,"Good Match 
+Strengths: 6.58y building production ML systems | 1.58y developing ranking systems | 1.58y in search and retrieval | product experience at Yellow.ai
+Alignment: matched 4 required skills | matched 1 preferred skills | within target experience range
+Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Reasonable fit for the target role."
+CAND_0072232,56,0.5802833558467396,"Good Match 
+Strengths: 3.92y building production ML systems | 3.92y developing ranking systems | 3.92y in search and retrieval | product experience at Yellow.ai
+Alignment: matched 4 required skills
+Considerations: slightly below preferred experience range (3.9y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Reasonable fit for the target role."
+CAND_0093401,57,0.5801355144330034,"Good Match 
+Strengths: 5.83y building production ML systems | product experience at Haptik
+Alignment: matched 4 required skills | matched 1 preferred skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Some gaps exist but the overall profile remains relevant."
+CAND_0060538,58,0.5691299303250874,"Good Match 
+Strengths: 5.08y building production ML systems | product experience at Verloop.io
+Alignment: matched 5 required skills | within target experience range
+Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Good alignment with the core requirements."
+CAND_0012888,59,0.5502341787192753,"Good Match 
+Strengths: 6.33y building production ML systems | 2.83y developing ranking systems | 2.83y in search and retrieval | product experience at Genpact AI
+Alignment: matched 4 required skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0001494,60,0.550129528590787,"Good Match 
+Strengths: 6.33y building production ML systems | 6.33y developing ranking systems | 6.33y in search and retrieval | product experience at Haptik
+Alignment: matched 4 required skills | matched 1 preferred skills | within target experience range
+Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Suitable depending on team priorities."
+CAND_0079064,61,0.5481284679938929,"Potential Match 
+Strengths: 5.17y building production ML systems | 3.67y in search and retrieval | hands-on experience with 3 vector database technologies | product experience at Niramai
+Alignment: matched 9 required skills | matched 2 preferred skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring
+ Would benefit from deeper technical evaluation."
+CAND_0025923,62,0.5459757449285102,"Potential Match 
+Strengths: 4.92y building production ML systems | product experience at HCL
+Alignment: matched 4 required skills
+Considerations: slightly below preferred experience range (4.9y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Would benefit from deeper technical evaluation."
+CAND_0067403,63,0.537792204640784,"Potential Match 
+Strengths: 4.5y building production ML systems | 3.67y developing ranking systems | 3.67y in search and retrieval | product experience at Unacademy
+Alignment: matched 4 required skills
+Considerations: slightly below preferred experience range (4.5y vs 5-9y) | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
+ Additional recruiter review is recommended."
+CAND_0003841,64,0.5374874307309148,"Potential Match 
+Strengths: 4.92y building production ML systems | 1.33y developing ranking systems | 1.33y in search and retrieval | product experience at Tech Mahindra
+Alignment: matched 5 required skills
+Considerations: slightly below preferred experience range (4.9y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Would benefit from deeper technical evaluation."
+CAND_0074325,65,0.5351238269272354,"Potential Match 
+Strengths: 3.83y building production ML systems | 1.83y developing ranking systems | 1.83y in search and retrieval | product experience at Haptik
+Alignment: matched 6 required skills
+Considerations: slightly below preferred experience range (3.8y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0084391,66,0.5339596288968415,"Potential Match 
+Strengths: 3.42y building production ML systems | 2.58y developing ranking systems | 2.58y in search and retrieval | product experience at HCL
+Alignment: matched 3 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (3.4y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Additional recruiter review is recommended."
+CAND_0001151,67,0.5309042879569565,"Potential Match 
+Strengths: 4.92y building production ML systems | 1.58y developing ranking systems | 1.58y in search and retrieval | product experience at Aganitha
+Alignment: matched 4 required skills
+Considerations: slightly below preferred experience range (4.9y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Several gaps should be validated during screening."
+CAND_0044222,68,0.5306751834304565,"Potential Match 
+Strengths: 7.67y building production ML systems | 3.58y developing ranking systems | 4.08y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at PolicyBazaar
+Alignment: matched 9 required skills | matched 2 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Would benefit from deeper technical evaluation."
+CAND_0021410,69,0.5259570179349718,"Potential Match 
+Strengths: 4.0y building production ML systems | 4.0y developing ranking systems | 4.0y in search and retrieval | product experience at Krutrim
+Alignment: matched 4 required skills
+Considerations: slightly below preferred experience range (4.0y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Would benefit from deeper technical evaluation."
+CAND_0070525,70,0.5240146258865821,"Potential Match 
+Strengths: 5.33y building production ML systems | 2.5y developing ranking systems | 2.5y in search and retrieval | product experience at Mad Street Den
+Alignment: matched 5 required skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0016659,71,0.5230771761257347,"Potential Match 
+Strengths: 4.33y building production ML systems | 1.17y developing ranking systems | 1.17y in search and retrieval | product experience at Glance
+Alignment: matched 6 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.3y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0078492,72,0.5199669480424789,"Potential Match 
+Strengths: 5.08y building production ML systems | 5.08y developing ranking systems | 5.08y in search and retrieval | hands-on experience with 1 vector database technologies | product experience at Verloop.io
+Alignment: matched 6 required skills | matched 1 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ Would benefit from deeper technical evaluation."
+CAND_0014715,73,0.5192558442245638,"Potential Match 
+Strengths: 4.17y building production ML systems | 2.0y developing ranking systems | 2.0y in search and retrieval | product experience at Saarthi.ai
+Alignment: matched 4 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.2y vs 5-9y) | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
+ Additional recruiter review is recommended."
+CAND_0089829,74,0.5140384980442089,"Potential Match 
+Strengths: 4.17y building production ML systems | product experience at Swiggy
+Alignment: matched 3 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (4.2y vs 5-9y) | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
+ Would benefit from deeper technical evaluation."
+CAND_0013122,75,0.5096446233521383,"Potential Match 
+Strengths: 4.25y building production ML systems | 1.58y developing ranking systems | 1.58y in search and retrieval | product experience at Unacademy
+Alignment: matched 3 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (4.2y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0073620,76,0.5090398698468654,"Potential Match 
+Strengths: 4.33y building production ML systems | 3.08y developing ranking systems | 3.08y in search and retrieval | product experience at TCS
+Alignment: matched 6 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.3y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0096104,77,0.5077232043961153,"Potential Match 
+Strengths: 6.92y building production ML systems | 3.83y developing ranking systems | 3.83y in search and retrieval | product experience at Yellow.ai
+Alignment: matched 5 required skills | matched 1 preferred skills | within target experience range
+Considerations: no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0063585,78,0.5065541055414378,"Potential Match 
+Strengths: 3.08y building production ML systems | 3.08y developing ranking systems | 3.08y in search and retrieval | product experience at Observe.AI
+Alignment: matched 5 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (3.1y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0080189,79,0.5022191858471349,"Potential Match 
+Strengths: 4.33y building production ML systems | product experience at Saarthi.ai
+Alignment: matched 2 required skills | matched 3 preferred skills
+Considerations: slightly below preferred experience range (4.3y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0000705,80,0.500453969979304,"Potential Match 
+Strengths: 3.58y building production ML systems | product experience at Zomato
+Alignment: matched 3 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (3.6y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Additional recruiter review is recommended."
+CAND_0005649,81,0.49720189584554936,"Potential Match 
+Strengths: 7.33y building production ML systems | 1.33y developing ranking systems | 1.5y in search and retrieval | hands-on experience with 3 vector database technologies | product experience at Sarvam AI
+Alignment: matched 10 required skills | matched 2 preferred skills | within target experience range
+Considerations: extended notice period (90d)
+ May suit adjacent roles better."
+CAND_0045613,82,0.49366097347130555,"Potential Match 
+Strengths: 4.92y building production ML systems | 2.83y developing ranking systems | 2.83y in search and retrieval | product experience at Saarthi.ai
+Alignment: matched 6 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.9y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Several gaps should be validated during screening."
+CAND_0034767,83,0.4916352277861167,"Potential Match 
+Strengths: 3.5y building production ML systems | product experience at PharmEasy
+Alignment: matched 3 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (3.5y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Several gaps should be validated during screening."
+CAND_0070653,84,0.4897231638948222,"Potential Match 
+Strengths: 4.92y building production ML systems | product experience at Dream11
+Alignment: matched 3 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (4.9y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Several gaps should be validated during screening."
+CAND_0038099,85,0.4861543063040221,"Potential Match 
+Strengths: 5.33y building production ML systems | 3.58y developing ranking systems | 3.58y in search and retrieval | product experience at Locobuzz
+Alignment: matched 5 required skills | matched 1 preferred skills | within target experience range
+Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0079688,86,0.48438821233800605,"Potential Match 
+Strengths: 3.25y building production ML systems | product experience at Aganitha
+Alignment: matched 6 required skills
+Considerations: slightly below preferred experience range (3.2y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ May suit adjacent roles better."
+CAND_0057162,87,0.4842617811891035,"Potential Match 
+Strengths: 4.17y building production ML systems | product experience at Genpact AI
+Alignment: matched 4 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (4.2y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Several gaps should be validated during screening."
+CAND_0076904,88,0.4832828352469669,"Potential Match 
+Strengths: 4.08y building production ML systems | 2.33y developing ranking systems | 4.08y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Nykaa
+Alignment: matched 9 required skills | matched 1 preferred skills
+Considerations: slightly below preferred experience range (4.1y vs 5-9y) | extended notice period (90d)
+ May suit adjacent roles better."
+CAND_0065195,89,0.47201647832019333,"Potential Match 
+Strengths: 5.08y building production ML systems | hands-on experience with 1 vector database technologies | product experience at CRED
+Alignment: matched 6 required skills | matched 2 preferred skills | within target experience range
+Considerations: no critical gaps
+ Additional recruiter review is recommended."
+CAND_0018722,90,0.4691054567452999,"Potential Match 
+Strengths: 6.5y building production ML systems | 4.17y developing ranking systems | 6.5y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Saarthi.ai
+Alignment: matched 9 required skills | matched 1 preferred skills | within target experience range
+Considerations: extended notice period (90d)
+ Several gaps should be validated during screening."
+CAND_0035879,91,0.4674528466343434,"Potential Match 
+Strengths: 4.5y building production ML systems | 3.0y developing ranking systems | 3.0y in search and retrieval | product experience at Krutrim
+Alignment: matched 5 required skills
+Considerations: slightly below preferred experience range (4.5y vs 5-9y) | very long notice period (120d) may delay hiring | no mention of eval metrics (NDCG/MAP)
+ Additional recruiter review is recommended."
+CAND_0074648,92,0.4613736323469257,"Potential Match 
+Strengths: 4.08y building production ML systems | product experience at Flipkart
+Alignment: matched 6 required skills
+Considerations: slightly below preferred experience range (4.1y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Would benefit from deeper technical evaluation."
+CAND_0020877,93,0.4602509670043476,"Potential Match 
+Strengths: 5.0y building production ML systems | 3.17y in search and retrieval | hands-on experience with 3 vector database technologies | product experience at CRED
+Alignment: matched 11 required skills | matched 3 preferred skills | within target experience range
 Considerations: no critical gaps
  May suit adjacent roles better."
-CAND_0018722,95,0.4691054567452999,"Potential Match 
-Strengths: 6.5y building production ML systems | 4.17y developing ranking systems | 6.5y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Saarthi.ai
-Alignment: matched 7 required skills | within target experience range
-Considerations: extended notice period (90d)
- Several gaps should be validated during screening."
-CAND_0084681,96,0.4688192196934118,"Potential Match 
-Strengths: 3.42y building production ML systems | 1.58y developing ranking systems | 1.58y in search and retrieval | product experience at Zomato
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.4y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+CAND_0003100,94,0.45971405427623,"Potential Match 
+Strengths: 5.5y building production ML systems | product experience at Verloop.io
+Alignment: matched 5 required skills | matched 2 preferred skills | within target experience range
+Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
  May suit adjacent roles better."
-CAND_0062247,97,0.46843019130926566,"Potential Match 
-Strengths: 7.25y building production ML systems | 4.17y developing ranking systems | 7.25y in search and retrieval | hands-on experience with 2 vector database technologies | product experience at Google
-Alignment: matched 6 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- Additional recruiter review is recommended."
-CAND_0046108,98,0.46668209098827745,"Potential Match 
-Strengths: 3.58y building production ML systems | 2.0y developing ranking systems | 2.0y in search and retrieval | product experience at CRED
-Alignment: matched 3 required skills
-Considerations: slightly below preferred experience range (3.6y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+CAND_0028793,95,0.4554572204996467,"Potential Match 
+Strengths: 7.08y building production ML systems | 1.08y developing ranking systems | 2.67y in search and retrieval | hands-on experience with 3 vector database technologies | product experience at Google
+Alignment: matched 8 required skills | matched 3 preferred skills | within target experience range
+Considerations: very long notice period (120d) may delay hiring
+ Would benefit from deeper technical evaluation."
+CAND_0088602,96,0.4550687051242621,"Potential Match 
+Strengths: 4.75y building production ML systems | product experience at Niramai
+Alignment: matched 3 required skills | matched 3 preferred skills
+Considerations: slightly below preferred experience range (4.8y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
  Several gaps should be validated during screening."
-CAND_0015967,99,0.46618042996379533,"Potential Match 
-Strengths: 5.33y building production ML systems | 3.5y developing ranking systems | 3.5y in search and retrieval | product experience at Razorpay
-Alignment: matched 3 required skills | within target experience range
-Considerations: no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
-CAND_0000705,100,0.4643536906252847,"Potential Match 
-Strengths: 3.58y building production ML systems | product experience at Zomato
+CAND_0072784,97,0.4535138962043237,"Potential Match 
+Strengths: 3.33y building production ML systems | product experience at Zoho
 Alignment: matched 2 required skills
-Considerations: slightly below preferred experience range (3.6y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
- May suit adjacent roles better."
+Considerations: slightly below preferred experience range (3.3y vs 5-9y) | extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Would benefit from deeper technical evaluation."
+CAND_0063328,98,0.45005545387916324,"Potential Match 
+Strengths: 4.5y building production ML systems | 1.67y developing ranking systems | 1.67y in search and retrieval | product experience at Ola
+Alignment: matched 4 required skills
+Considerations: slightly below preferred experience range (4.5y vs 5-9y) | no mention of eval metrics (NDCG/MAP)
+ Would benefit from deeper technical evaluation."
+CAND_0071033,99,0.4497989243246064,"Potential Match 
+Strengths: 3.75y building production ML systems | 3.75y developing ranking systems | 3.75y in search and retrieval | product experience at Meesho
+Alignment: matched 4 required skills | matched 2 preferred skills
+Considerations: slightly below preferred experience range (3.8y vs 5-9y) | very long notice period (120d) may delay hiring | below-average recruiter engagement | no mention of eval metrics (NDCG/MAP)
+ Additional recruiter review is recommended."
+CAND_0080372,100,0.44806651116845797,"Potential Match 
+Strengths: 5.08y building production ML systems | 1.75y developing ranking systems | 1.75y in search and retrieval | product experience at Zoho
+Alignment: matched 3 required skills | within target experience range
+Considerations: extended notice period (90d) | no mention of eval metrics (NDCG/MAP)
+ Several gaps should be validated during screening."

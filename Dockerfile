@@ -63,7 +63,7 @@ RUN printf '%s\n' \
 'env | grep DISPLAY' \
 '' \
 'echo "Starting CogniHire..."' \
-'exec uv run python app_final.py' \
+'exec uv run python app.py' \
 > /usr/local/bin/start.sh && \
 chmod +x /usr/local/bin/start.sh
 
