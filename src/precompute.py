@@ -1,13 +1,10 @@
-# src/precompute.py
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 import time
 import multiprocessing
 import numpy as np
 import faiss
 from tqdm import tqdm
 from sentence_transformers import SentenceTransformer
-
 from .loader import load_candidates
 from .text_builder import build_rich_txt
 from .config import (
@@ -31,8 +28,6 @@ def generate_candidate_embeddings_parallel(model, candidates):
     
     print(f"Encoding {len(text_blocks)} candidates using {EMBEDDING_MODEL}...")
     
-    # Using standard encode instead of multi_process_pool to avoid potential deadlocks 
-    # and "stuck" behavior during aggregation on some environments.
     embeddings = model.encode(
         text_blocks, 
         batch_size=128,
@@ -45,7 +40,6 @@ def generate_candidate_embeddings_parallel(model, candidates):
 def build_and_save_faiss_index(embeddings):
     print("🏗️  Indexing vectors with FAISS (Cosine Similarity)...")
     
-    # L2 Normalize embeddings to use Inner Product as Cosine Similarity
     faiss.normalize_L2(embeddings)
     
     dimension = embeddings.shape[1]

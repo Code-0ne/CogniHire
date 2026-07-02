@@ -11,7 +11,6 @@ def generate_reasoning(candidate, rank, final_score, jd_text=None):
     
     traj = calculate_trajectory_scores(candidate)
 
-    # Parse uploaded JD (or fallback to default JD)
     jd = get_jd_cont(jd_text)
     
     total_months = sum([j.get("duration_months", 0) for j in career])
@@ -57,10 +56,9 @@ def generate_reasoning(candidate, rank, final_score, jd_text=None):
             f"hands-on experience with {traj['vector_db_deployments']} vector database technologies"
         )
     
-    # Mention specific top company if it's a product company
     if career:
         latest_company = career[0].get("company", "Unknown")
-        # Use a simplified check for product-company status if available in trajectory
+        
         if traj["product_company_years"] > 0:
             strength_factors.append(f"product experience at {latest_company}")
 

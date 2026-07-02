@@ -10,21 +10,12 @@ from .config import CROSS_ENCODER_MODEL, TARGET_JD
 from src.trajectory_engine import calculate_trajectory_scores
 
 def rank_candidates(scored_candidates, candidates, jd_text, cross_model):
-    """
-    Precision Reranking logic (Sieve 3) extracted from the main ranker.
-    
-    Args:
-        scored_candidates: Output from sieve_2 (list of dicts with 'index' and 'candidate_id', 'sieve2_score')
-        candidates: Full candidate list
-        jd_text: Job Description text
-        cross_model: The CrossEncoder model instance
-    """
+
     pairs = []
     candidate_ids = []
     indices = []
     sieve2_scores = []
     
-    # Rerank the candidates passed from sieve_2
     for item in scored_candidates:
         txt = build_rich_txt(candidates[item["index"]])
         pairs.append([jd_text, txt])
@@ -36,35 +27,25 @@ def rank_candidates(scored_candidates, candidates, jd_text, cross_model):
 
     results = []
     for i in range(len(cross_scores)):
-        # FUSE SCORES: Combine CrossEncoder, Sieve 2, and Trajectory
-        # Final Score = 0.60 * CrossEncoder + 0.25 * Sieve2 + 0.15 * Trajectory
-        
-        # 1. Normalize CrossEncoder score using a sigmoid function to constrain it to [0, 1]
-        # This prevents a single high CE score from dominating the fusion.
         ce_raw = float(cross_scores[i])
         ce_score = 1 / (1 + np.exp(-ce_raw)) 
         
         s2_score = sieve2_scores[i]
-        # Normalize Sieve 2 score
         s2_norm = s2_score / 10.0 if s2_score > 1.0 else s2_score
 
-        # Reuse trajectory from Sieve 2
         s2_item = scored_candidates[i]
         traj = s2_item.get("trajectory")
-        # Calculate trajectory score for the 15% component
         if traj is None:
             traj = calculate_trajectory_scores(candidates[indices[i]])
         
-        # Expanded trajectory score to include infrastructure and quality signals
         traj_val = (min(traj["production_ml_years"], 5) * 1 + 
                    min(traj["ranking_years"], 5) * 2 + 
                    min(traj["search_rec_years"], 5) * 1.5 +
                    (traj["vector_db_deployments"] * 0.5) + 
                    (traj["eval_framework_score"] * 0.3) + 
                    (traj["open_source_score"] * 0.5))
-        traj_score = min(traj_val / 20.0, 1.0) # Normalized to roughly 0-1
+        traj_score = min(traj_val / 20.0, 1.0) 
         
-        # Fusion Logic
         final_score = (0.60 * ce_score) + (0.25 * s2_norm) + (0.15 * traj_score)
 
         results.append({"candidate_id": candidate_ids[i], 
@@ -86,10 +67,7 @@ def main(output_file="team_PixelPioneers.csv"):
     start_time = time.time()
     candidates = load_candidates()
     if not candidates: return
-    
-    # The pipeline handles embedding generation, but for standalone ranker:
-    # We use a dummy or precomputed JD vector. 
-    # To fix the crash, we can try to load it or provide a fallback.
+
     try:
         distances, top_indices = sieve_1(candidates)
     except FileNotFoundError:
@@ -102,10 +80,9 @@ def main(output_file="team_PixelPioneers.csv"):
     cross_model = CrossEncoder(CROSS_ENCODER_MODEL)
     jd_text = TARGET_JD
     
-    # Use the same logic as rank_candidates to ensure consistency between GUI and CLI
+    
     results_100 = rank_candidates(top_600, candidates, jd_text, cross_model)
 
-    # Map results to the submission format
     candidate_map = {c["candidate_id"]: c for c in candidates}
     submission_data = []
     for rank, res in enumerate(results_100, 1):

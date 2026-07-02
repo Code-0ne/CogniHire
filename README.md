@@ -204,7 +204,7 @@ Example:
 
 > **Excellent Match:** Senior Machine Learning Engineer with 6.8 years of experience. Built production ML systems for 5.2 years with 3.4 years of ranking/search experience. Strong product-company background, hands-on vector database deployment, and high alignment with required JD skills.
 
-No external LLM APIs are used during ranking.
+Reasoning is generated deterministically from verified candidate profile attributes without relying on external LLM APIs.
 
 ---
 
@@ -386,10 +386,15 @@ Designed for CPU-only execution.
 
 ![Application Preview](screenshots/image1.png)
 
-After Ranking:
+During Computation:
 
 ![Application Preview](screenshots/image2.png)
 
+After Ranking:
+
+![Application Preview](screenshots/image3.png)
+
+---
 
 # 👥 Team
 

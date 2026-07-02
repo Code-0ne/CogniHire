@@ -13,7 +13,6 @@ def sieve_1(candidates=None, jd_vec=None):
         
     index = faiss.read_index(FAISS_INDEX_PATH)
     
-
     D, I = index.search(vector, TOP_K_RECALL)
     return D[0].tolist(), I[0].tolist()
 
@@ -22,9 +21,7 @@ def sieve_2(distances, indices, candidates, jd_text=None):
     print("🧠 Sieve 2: Applying Intelligence Filters & Trap Detection...")
     scored_candidates = []
 
-
     jd = get_jd_cont(jd_text)
-    # ---------------- Dynamic JD ---------------- #
 
     required_skills = set(jd.get("required_skills", []))
     preferred_skills = set(jd.get("preferred_skills", []))
@@ -44,13 +41,11 @@ def sieve_2(distances, indices, candidates, jd_text=None):
     for dist, idx in zip(distances, indices):
         cand = candidates[idx]
         
-       
         base_score = 1.0 / (1.0 + dist)
         
         red_flags = 0
         multiplier = 1.0
 
-       
         career = cand.get("career_history", [])
       
         total_months = sum([j.get("duration_months", 0) for j in career])
@@ -59,8 +54,7 @@ def sieve_2(distances, indices, candidates, jd_text=None):
 
         companies = [j.get("company", "").lower() for j in career]
         
-        # Calculate Consulting Ratio
-        if "pure_consulting" in disqualifiers:
+        if any(firm in disqualifiers for firm in CONSULTING_FIRMS):
             consulting_months = sum(
                 j.get("duration_months", 0)
                 for j in career
@@ -82,13 +76,14 @@ def sieve_2(distances, indices, candidates, jd_text=None):
             ):
                 continue
 
-     
         rich_text = " ".join([j.get("description", "") for j in career]).lower()
         summary = cand.get("profile", {}).get("summary", "").lower()
-        full_profile_text = rich_text + " " + summary
         
-        # Domain Relevance Scoring (Replaces brittle hard filter)
-        # Instead of 'continue', we calculate relevance. If 0 hits, we penalize but don't discard.
+        skills_list = cand.get("skills", [])
+        skills_text = " ".join([s.get("name", "").lower() for s in skills_list])
+        
+        full_profile_text = rich_text + " " + summary + " " + skills_text
+        
         domain_hits = [
             skill
             for skill in required_skills
@@ -110,7 +105,6 @@ def sieve_2(distances, indices, candidates, jd_text=None):
 
         multiplier += len(preferred_hits) * 0.03
 
-        # System Engineering Match
         system_hits = [
             word for word in system_keywords
             if word in full_profile_text
@@ -122,9 +116,9 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         traj = calculate_trajectory_scores(cand)
         
         # 1. ExperienceSweet Spot (5-9 years)
-        total_yoe = traj["product_company_years"] + traj["consulting_years"]
+        total_yoe = yoe
 
-        if min_exp <= total_yoe <= (max_exp or total_yoe):
+        if (total_yoe >= min_exp and (max_exp is None or total_yoe <= max_exp)):
             multiplier += 0.15
         if max_exp is not None and total_yoe > max_exp + 2:
             multiplier -= 0.05
@@ -133,13 +127,12 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         elif total_yoe < 4:
             multiplier += SIGNAL_MODIFIERS["exp_under_4_penalty"]
         
-        # 2. Core Technical Alignment (Direct Additive Bonuses)
-        # These are based on YEARS of experience in a domain, not just keywords
-        # Fix: Clamp experience to 5 years to prevent seniors from dominating unboundedly
-        multiplier += (min(traj["production_ml_years"], 5) * 0.1)  # +10% per year of prod ML (max 5)
-        multiplier += (min(traj["search_rec_years"], 5) * 0.15)   # +15% per year of Search/Rec (max 5)
-        multiplier += (min(traj["ranking_years"], 5) * 0.2)       # +20% per year of Ranking (max 5)
-        multiplier += (min(traj["nlp_years"], 5) * 0.05)          # +5% per year of NLP (max 5)
+        # 2. Core Technical Alignment 
+        
+        multiplier += (min(traj["production_ml_years"], 5) * 0.1) 
+        multiplier += (min(traj["search_rec_years"], 5) * 0.15)   
+        multiplier += (min(traj["ranking_years"], 5) * 0.2)      
+        multiplier += (min(traj["nlp_years"], 5) * 0.05)          
         
         # 3. Critical Infrastructure Bonus
         if vector_dbs:
@@ -155,12 +148,10 @@ def sieve_2(distances, indices, candidates, jd_text=None):
 
         # 5. Role-based Modifiers
         if traj["manager_years"] > 3:
-            multiplier -= 0.1  # Slight penalty for too much management vs coding
+            multiplier -= 0.1  
         if ( not research_friendly and traj["research_years"] > 4 and traj["production_ml_years"] < 2):
             red_flags += 1
 
-        # Direct Production Experience Scoring
-        # Reward candidates who mention scaling, monitoring, indexing, etc.
         prod_keywords = set(jd.get("production_signals", PRODUCTION_KEYWORDS)).union({"monitoring", "indexing", "observability", "kubernetes", "docker", "terraform"})
 
         prod_hits = [word for word in prod_keywords if word in full_profile_text]
@@ -171,42 +162,33 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         if len(career) > 1:
             avg_tenure = yoe / len(career)
             if avg_tenure < MAX_AVG_TENURE_FOR_STABILITY:
-                # Instead of instant red flag, we check for a pattern of short jobs
-                # Only apply red flag if there are 3+ consecutive short stints (< 18 months)
                 short_stints = [j for j in career if j.get("duration_months", 0) < 18]
                 if len(short_stints) >= 3:
-                    red_flags += 1 # Heavy penalty for habitual job hopping
-            
-            # Note: Individual short stints in early career or startup jumps are now ignored
-            # unless they form a pattern of 3 or more.
+                    red_flags += 1 
 
         # --- Redrob Signal Integration ---
+
         sig = cand.get("redrob_signals", {})
         
-        # 1. Profile Completeness (0-100)
         completeness = sig.get("profile_completeness_score", 0)
         if completeness < 40: red_flags += 1
         elif completeness > 80: multiplier += 0.05
 
-        # 4. Open to Work
         if sig.get("open_to_work_flag"): 
             multiplier += SIGNAL_MODIFIERS["open_to_work_bonus"]
 
-        # 7. Recruiter Response Rate (0.0-1.0)
         resp_rate = sig.get("recruiter_response_rate", 1.0)
         if resp_rate < 0.2: 
             multiplier += SIGNAL_MODIFIERS["low_response_penalty"]
         elif resp_rate > 0.8:
             multiplier += SIGNAL_MODIFIERS["high_response_bonus"]
 
-        # 12. Notice Period (0-180 days)
         notice = sig.get("notice_period_days", 30)
         if notice > 60: 
             multiplier += SIGNAL_MODIFIERS["long_notice_penalty"]
         elif notice < 30: 
             multiplier += SIGNAL_MODIFIERS["fast_notice_bonus"]
 
-        # 16. GitHub Activity Score (-1 to 100)
         gh_score = sig.get("github_activity_score", -1)
         if yoe > MIN_YEARS_FOR_EXTERNAL_VALIDATION:
             if gh_score == -1 and "paper" not in rich_text:
@@ -214,15 +196,12 @@ def sieve_2(distances, indices, candidates, jd_text=None):
         if gh_score > 70:
             multiplier += SIGNAL_MODIFIERS["github_active_bonus"]
 
-        # 19. Interview Completion Rate (0.0-1.0)
         if sig.get("interview_completion_rate", 1.0) > 0.9:
             multiplier += SIGNAL_MODIFIERS["high_completion_bonus"]
 
-        # 21 & 22. Verified Email/Phone
         if sig.get("verified_email") and sig.get("verified_phone"):
             multiplier += SIGNAL_MODIFIERS["verified_bonus"]
 
-        # 17 & 18. Recruiter Interest (Search/Saved)
         if sig.get("saved_by_recruiters_30d", 0) > 5:
             multiplier += SIGNAL_MODIFIERS["high_demand_bonus"]
 
@@ -237,24 +216,28 @@ def sieve_2(distances, indices, candidates, jd_text=None):
                 multiplier += 0.10
 
         if "recent_production" in preferred_candidate:
-            if len(prod_hits) >= 3:
+            
+            latest_role_desc = career[0].get("description", "").lower() if career else ""
+            if any(word in latest_role_desc for word in PRODUCTION_KEYWORDS):
                 multiplier += 0.10
+            elif len(prod_hits) >= 3:
+                multiplier += 0.05
 
         # 3. Last Active Date (Recency check)
-        # Simple check: if they haven't been active, apply inactive penalty
-        # (Assuming a date string format, we just check if it exists for now)
         if not sig.get("last_active_date"):
             multiplier += SIGNAL_MODIFIERS["inactive_penalty"]
         
         loc = cand.get("profile", {}).get("location", "").lower()
+        willing_to_relocate = sig.get("willing_to_relocate", False)
         loc_multiplier = DEFAULT_LOCATION_MULTIPLIER
 
-        if any(city in loc for city in target_locations):
+        if any(city in loc for city in target_locations) or willing_to_relocate:
             loc_multiplier = JD_LOCATION_MATCH_BONUS
 
         multiplier *= loc_multiplier
 
-        if "computer_vision" in disqualifiers and "computer vision" in full_profile_text:
+        cv_keywords = {"computer vision", "opencv", "image classification", "object detection", "segmentation", "pytorch vision", "torchvision"}
+        if any(word in full_profile_text for word in cv_keywords) and "computer_vision" in disqualifiers:
             red_flags += 1
 
         if "robotics" in disqualifiers and "robotics" in full_profile_text:
@@ -264,7 +247,10 @@ def sieve_2(distances, indices, candidates, jd_text=None):
             red_flags += 1
 
         if "langchain_demo" in disqualifiers:
-            if "langchain" in full_profile_text and "production" not in full_profile_text:
+            
+            prod_signals = {"production", "deployed", "deployment", "serving", "monitoring", "kubernetes", "docker"}
+            if (("langchain" in full_profile_text or "openai" in full_profile_text) 
+                and not any(sig in full_profile_text for sig in prod_signals)):
                 red_flags += 1
 
         multiplier = max(0.2, min(multiplier, 3.0))

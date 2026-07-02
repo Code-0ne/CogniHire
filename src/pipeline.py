@@ -1,4 +1,3 @@
-# src/pipeline.py
 import numpy as np
 import faiss
 import pandas as pd
@@ -30,18 +29,13 @@ class CogniHireEngine:
         print("⚙️  Executing precompute.py workflow...")
         setup_artifacts()
         
-        # 1. Generate Embeddings
         embeddings = generate_candidate_embeddings_parallel(self.embed_model, candidates)
         
-        # 2. Save Embeddings to disk
         np.save(EMBEDDINGS_PATH, embeddings)
         print(f"✅ Embeddings saved to {EMBEDDINGS_PATH}")
         
-        # 3. Build and Save FAISS Index to disk
         build_and_save_faiss_index(embeddings)
         
-        # 4. Precompute and Save JD target vector (using the default TARGET_JD from config)
-
         print("Precomputing JD target vector...")
         jd_vec = self.embed_model.encode([TARGET_JD],convert_to_numpy=True).astype('float32')
 
@@ -50,10 +44,8 @@ class CogniHireEngine:
         np.save(JD_EMBEDDING_PATH, jd_vec)
         print(f"✅ JD embedding saved to {JD_EMBEDDING_PATH}")
         
-        # 5. Update in-memory state for immediate use in run_pipeline
         self.embeddings = embeddings
         dimension = embeddings.shape[1]
-        # Use IndexFlatIP with normalized vectors for Cosine Similarity
         faiss.normalize_L2(embeddings)
         self.index = faiss.IndexFlatIP(dimension)
         self.index.add(embeddings)

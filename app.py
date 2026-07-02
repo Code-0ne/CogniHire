@@ -225,8 +225,10 @@ class CogniHireApp(ctk.CTk):
 
     def show_summary(self, total_time_s, results_df, precompute_time=0, ranking_time=0):
         minutes = total_time_s / 60
+        precompute_mins = precompute_time / 60
+        ranking_mins = ranking_time / 60
         
-        summary_text = f" Total Execution Time: {total_time_s:.2f}s ({minutes:.2f} mins) | Precompute: {precompute_time:.2f}s | Rank: {ranking_time:.2f}s"
+        summary_text = f" Total Execution Time: {total_time_s:.2f}s ({minutes:.2f} mins) | Precompute: {precompute_time:.2f}s ({precompute_mins:.2f} mins) | Rank: {ranking_time:.2f}s ({ranking_mins:.2f} mins)"
         
         self.progress_container.grid_remove()
         self.step_frame.grid_remove()

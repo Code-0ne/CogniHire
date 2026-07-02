@@ -56,7 +56,6 @@ MAX_ALLOWED_RED_FLAGS = 2
 RED_FLAG_PENALTY = 0.5
 
 # Consulting Companies
- 
 
 CONSULTING_FIRMS = {
     "tcs",
@@ -74,7 +73,6 @@ CONSULTING_FIRMS = {
 }
 
 # Domain Keywords
- 
 
 REQUIRED_DOMAIN_KEYWORDS = {
     "nlp",
@@ -102,29 +100,6 @@ REQUIRED_DOMAIN_KEYWORDS = {
     "sentence-transformers",
     "rag",
     "search",
-}
-
-WRONG_DOMAIN_KEYWORDS = {
-    "computer vision",
-    "opencv",
-    "robotics",
-    "speech",
-    "audio",
-    "signal processing",
-    "medical imaging",
-    "image classification",
-    "autonomous driving",
-}
-
-FRAMEWORK_KEYWORDS = {
-    "langchain",
-    "llamaindex",
-    "crewai",
-    "autogen",
-    "tutorial",
-    "demo",
-    "wrapper",
-    "api-call",
 }
 
 SYSTEM_KEYWORDS = {
