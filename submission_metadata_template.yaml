@@ -1,0 +1,94 @@
+# ============================================================================
+# Team identity
+# ============================================================================
+
+team_name: "PixelPioneers"
+
+primary_contact:
+  name: "Rwitabrato Hanpal"
+  email: "rwitabratohanpal1@gmail.com"
+  phone: "+91-9875682894"
+
+team_members:
+  - name: "Rwitabrato Hanpal"
+    email: "rwitabratohanpal1@gmail.com"
+    role: "ML Engineer & System Architect"
+
+  - name: "Anushka Ghosh"
+    email: "anushkaatanu20@gmail.com"
+    role: "ML Engineer & UI/UX Designer"
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+
+github_repo: "https://github.com/Code-0ne/CogniHire"
+
+sandbox_link: "https://hub.docker.com/r/rwitabrato/cognihire"
+
+reproduce_command: |
+  docker pull rwitabrato/cognihire:latest
+  docker run --rm -p 6080:6080 rwitabrato/cognihire:latest
+
+  # Open in your browser:
+  # http://localhost:6080/vnc.html
+  
+# ============================================================================
+# Compute environment
+# ============================================================================
+
+compute:
+  platform: "Windows 11 with WSL2 (Ubuntu 24.04)"
+  cpu_cores: 8           
+  ram_gb: 16
+  python_version: "3.13"
+  os: "Windows 11 + WSL2 Ubuntu 24.04"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: true
+  pre_computation_time_minutes: 36   
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+
+ai_tools_used:
+  - "ChatGPT"
+  - "GitHub Copilot"
+
+ai_usage_summary: |
+  ChatGPT was used for architecture discussions, debugging, documentation,
+  Docker configuration, and general code review. GitHub Copilot was used
+  for autocomplete and boilerplate generation. All ranking logic,
+  heuristics, feature engineering, scoring functions, and system design
+  were implemented and validated by the team. No candidate data was sent
+  to external LLM APIs during inference or ranking.
+
+# ============================================================================
+# Approach summary
+# ============================================================================
+
+methodology_summary: |
+  CogniHire is a three-stage AI candidate ranking engine combining semantic
+  retrieval, structured career trajectory analysis, behavioral signal
+  modeling, and neural reranking. Candidate profiles are transformed into
+  rich semantic representations and retrieved using SentenceTransformer
+  embeddings with FAISS cosine similarity. A Candidate Intelligence Engine
+  evaluates production ML experience, ranking/search expertise, consulting
+  ratio, product-company experience, career progression, behavioral
+  recruiter signals, and dynamic Job Description alignment. Final ranking
+  is refined using a local CrossEncoder and fused with structured feature
+  scores to generate explainable rankings. The system runs entirely on CPU,
+  requires no external APIs during inference, and produces deterministic,
+  explainable Top-100 candidate rankings.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true

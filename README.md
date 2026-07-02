@@ -27,7 +27,7 @@ Unlike traditional ATS systems that rely on keyword matching, CogniHire evaluate
 
 CogniHire was designed for the Redrob AI Hiring Challenge while satisfying strict production constraints.
 
-- ✅ Rank Top-100 candidates from 100K profiles
+- ✅ Generate an explainable Top-100 candidate ranking
 - ✅ CPU-only execution
 - ✅ ≤16 GB RAM
 - ✅ Offline inference
@@ -182,14 +182,15 @@ Final Score
 
 CogniHire automatically extracts structured hiring intent from the uploaded Job Description.
 
-It identifies:
+It extracts:
 
 - Required Skills
 - Preferred Skills
-- System Design Requirements
 - Experience Range
-- Production Expectations
+- Production Requirements
+- System Requirements
 - Behavioral Preferences
+- Disqualifiers
 
 Candidates are evaluated against these requirements instead of relying on keyword matching.
 
@@ -226,13 +227,20 @@ No external LLM APIs are used during ranking.
 
 ```text
 CogniHire/
-│
 ├── app.py
+├── Dockerfile
 ├── pyproject.toml
 ├── uv.lock
-├── Dockerfile
+├── validate_submission.py
+├── submission_metadata.yaml
+├── team_PixelPioneers.csv
 │
 ├── artifacts/
+│
+│
+├── sample/
+│   └── sample_candidates.jsonl (for testing in sandbox(docker))
+│
 │
 ├── src/
 │   ├── config.py
@@ -262,7 +270,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 Clone the repository
 
 ```bash
-git clone https://github.com/GhostisLive/CogniHire.git
+git clone https://github.com/Code-0ne/CogniHire.git
 
 cd CogniHire
 ```
@@ -280,13 +288,13 @@ uv sync
 Launch the desktop interface
 
 ```bash
-uv run python app.py
+uv run app.py
 ```
 
 The GUI allows users to:
 
 - Upload Candidate JSONL
-- Automatically Generate Embeddings
+- Precompute candidate embeddings
 - Build a Temporary FAISS Index
 - Execute the Complete Ranking Pipeline
 - Export the Top-100 Ranked CSV
@@ -322,6 +330,19 @@ uv run python -m src.ranker --out submission.csv
 
 ---
 
+# 🚀 Reproduce Submission CSV
+
+Generate the submission CSV from a clean clone.
+```
+uv sync
+
+uv run python -m src.precompute ; uv run python -m src.ranker --out submission.csv
+
+```
+This reproduces the submission CSV used for the hackathon.
+
+---
+
 # 🐳 Docker
 
 ## Pull Image
@@ -339,7 +360,7 @@ docker run --rm -p 6080:6080 rwitabrato/cognihire:latest
 Open:
 
 ```
-http://localhost:6080
+http://localhost:6080/vnc.html
 ```
 
 The Docker container launches the CogniHire interface where you can:
@@ -354,13 +375,21 @@ The Docker container launches the CogniHire interface where you can:
 
 Designed for CPU-only execution.
 
-- CPU Only
+- Designed for deterministic offline CPU-only execution
 - Offline Inference
 - ≤16 GB RAM
 - No External APIs
 - Fully Reproducible
 
 ---
+# 📸 Application Preview
+
+![Application Preview](screenshots/image1.png)
+
+After Ranking:
+
+![Application Preview](screenshots/image2.png)
+
 
 # 👥 Team
 
